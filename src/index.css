@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
+  body {
+    @apply font-body;
+  }
+}
+
+@layer components {
+  .post-images .swiper {
+    width: 50%;
+  }
+
+  .post-images .swiper-button-prev::after,
+  .post-images .swiper-button-next::after {
+    color: #fff;
+    font-size: 24px;
+  }
+}

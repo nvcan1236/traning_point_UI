@@ -2,6 +2,6 @@
 
 export default function HomePage() {
   return (
-    <div>HomePage</div>
+    <div className="text-blue-600 text-2xl">HomePage</div>
   )
 }
