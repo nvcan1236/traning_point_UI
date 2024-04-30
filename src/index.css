@@ -12,11 +12,31 @@
 @layer components {
   .post-images .swiper {
     width: 50%;
+    color: #333;
   }
 
   .post-images .swiper-button-prev::after,
   .post-images .swiper-button-next::after {
-    color: #fff;
-    font-size: 24px;
+    color: #000;
+    font-size: 16px;
   }
+  td {
+    padding: 8px 16px;
+  }
+
+  /* .post-images .swiper-button-prev::after {
+    margin-right: 2px;
+  }
+
+  .post-images .swiper-button-next::after {
+    margin-left: 2px;
+  } */
+
+  /* .post-images .swiper-button-prev,
+  .post-images .swiper-button-next {
+    width: 32px;
+    height: 32px;
+    background-color: #ccc;
+    border-radius: 50%;
+  } */
 }

@@ -1,15 +1,19 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useState } from "react";
 import Header from "./Header";
 import Footer from "./Footer";
-import { Outlet } from "react-router-dom";
+import { Outlet, useSearchParams } from "react-router-dom";
+import Profile from "../../pages/Profile";
 
 export default function MainLayout() {
+
   return (
     <>
       <Header />
-      <div className="w-5/6 mx-auto p-8 min-h-[480px] pt-[100px]">
-        <Outlet />
+      <div className="flex gap-10 pt-[100px]">
+        <div className={` w-5/6  mx-auto px-8 min-h-[480px] `}>
+          <Outlet />
+        </div>
       </div>
       <Footer />
     </>

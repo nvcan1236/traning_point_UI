@@ -2,9 +2,8 @@ import { Outlet } from "react-router-dom";
 
 export default function BlankLayout() {
   return (
-    <div className="w-screen min-h-screen flex items-center justify-center bg-blue-50">
-      <div className="flex gap-20 pr-24">
-        <div className="w-[800px] flex flex-col justify-center items-center ">
+    <div className="w-full min-h-screen flex gap-24 items-center justify-center bg-blue-50 pl-20 pr-24">
+        <div className="w-2/3 flex flex-col justify-center items-center ">
           <img
             src="https://cdn.haitrieu.com/wp-content/uploads/2021/09/Logo-DH-Mo-TPHCM-OU.png"
             alt=""
@@ -15,8 +14,9 @@ export default function BlankLayout() {
             PHỐ HỒ CHÍ MINH
           </h3>
         </div>
-        <Outlet />
-      </div>
+        <div className="flex-1">
+          <Outlet />
+        </div>
     </div>
   );
 }

@@ -4,10 +4,10 @@ const AuthContext = createContext();
 
 function AuthProvider(props) {
   const [user, setUser] = useState({
-    id: "",
+    id: "1",
     username: "nguyenvancanh",
-    firstName: "",
-    lastName: "",
+    firstName: "canh",
+    lastName: "nguyen van",
     is_student: true,
     is_assistant: false,
     is_admin: true,

@@ -16,7 +16,7 @@ export default function Comment({ children }) {
             <span className="font-medium">lehieu</span>
             <span> - April 22, 2024</span>
           </div>
-          <p className="px-3 py-2 bg-tintBlue rounded-md">{children}</p>
+          <p className="px-3 py-2 bg-blue-100 rounded-md">{children}</p>
         </div>
       </div>
     </div>

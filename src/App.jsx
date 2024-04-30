@@ -9,16 +9,18 @@ import RegisterPage from "./pages/RegisterPage";
 import BlankLayout from "./components/layout/BlankLayout";
 import { useAuth } from "./contexts/authContext";
 import { useEffect } from "react";
+import DetailResult from "./pages/DetailResult";
+import Profile from "./pages/Profile";
+import { API } from "./configs/APIconfig";
 
 function App() {
   const { user, setUser } = useAuth();
-  const api_endpoint = "http://localhost:8080/TrainingPointSystem/api";
   const navigator = useNavigate()
 
   useEffect(() => {
     const token = localStorage.getItem("USER_TOKEN");
     if (token) {
-      fetch(`${api_endpoint}/user/current`, {
+      fetch(API.currentUser, {
         headers: {
           Authorization: token,
         },
@@ -36,9 +38,11 @@ function App() {
       {user.is_student && (
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />}></Route>
-          <Route path="post" element={<PostPage />}></Route>
+          <Route path="post/*" element={<PostPage />}></Route>
           <Route path="activities" element={<ActivitiesPage />}></Route>
-          <Route path="result" element={<ResultPage />}></Route>
+          <Route path="result/overall" element={<ResultPage />}></Route>
+          <Route path="result/detail" element={<DetailResult/>}></Route>
+          <Route path="profile" element={<Profile/>}></Route>
         </Route>
       )}
 

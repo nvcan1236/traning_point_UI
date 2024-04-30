@@ -1,5 +1,5 @@
 // import PropTypes from 'prop-types'
-import { BiSolidLike } from "react-icons/bi";
+import { BiLike, BiSolidLike } from "react-icons/bi";
 import { IoChatboxOutline, IoSend } from "react-icons/io5";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import Avatar from "../Images/Avatar";
@@ -15,23 +15,27 @@ import Comment from "./Comment";
 function Post() {
   const [showComment, setShowComment] = useState(false);
   const [showFullContent, setShowFullContent] = useState(false);
+  const [liked, setLiked] = useState(false);
 
   return (
-    <div className="flex gap-4 p-4 text-sm border items-start border-tintBlue rounded-md post-images ">
+    <div className="flex gap-4 p-4 text-sm border  border-tintBlue rounded-md post-images ">
       <Swiper
         slidesPerView="auto"
         pagination={{
           type: "fraction",
         }}
+        style={{
+          alignSelf:"start"
+        }}
         navigation={true}
         modules={[Pagination, Navigation]}
       >
         {[1, 2, 3].map((i) => (
-          <SwiperSlide key={i}>
+          <SwiperSlide key={i} >
             <img
-              src="https://images.unsplash.com/photo-1713458101343-ae063854e754?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+              src="https://scontent.fsgn2-9.fna.fbcdn.net/v/t39.30808-6/439008056_829507969209170_3711046084065229065_n.jpg?stp=dst-jpg_p843x403&_nc_cat=106&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEopLmx0yX_fVoPcyL2DJ67npMDb9dNkYCekwNv102RgLorW_fJqgWQgl8wUJuSliefhj2svZS895MlIwS24ND_&_nc_ohc=VZhl-PntF7wAb78PaU7&_nc_ht=scontent.fsgn2-9.fna&oh=00_AfDiZcTKk1ZA7St2Iial7hDWsG9Nqm7MqrS7eKqMoE4aKg&oe=662BAE5A"
               alt=""
-              className="select-none"
+              className="select-none max-h-[400px] mx-auto"
             />
           </SwiperSlide>
         ))}
@@ -69,13 +73,19 @@ function Post() {
         </div>
 
         <div className="flex justify-between items-center mt-4">
-          <div className="flex gap-2 items-center">
-            {/* <BiLike className="text-mainBlue w-6 h-6" /> */}
-            <BiSolidLike className="text-mainBlue w-6 h-6" />
-            Like
+          <div
+            className="flex gap-2 items-center cursor-pointer"
+            onClick={() => setLiked(!liked)}
+          >
+            {liked ? (
+              <BiSolidLike className="text-mainBlue w-6 h-6" />
+            ) : (
+              <BiLike className="text-mainBlue w-6 h-6" />
+            )}
+            10 
           </div>
           <div
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 cursor-pointer"
             onClick={() => setShowComment(!showComment)}
           >
             <IoChatboxOutline className="text-mainBlue w-6 h-6" />

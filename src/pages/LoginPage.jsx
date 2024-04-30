@@ -1,41 +1,28 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
-import FormGroup from "../components/formControls/formGroup";
+import FormGroup from "../components/formControls/FormGroup";
 import Input from "../components/formControls/Input";
 import PrimaryButton from "../components/Buttons/PrimaryButton";
+import CheckBox from "../components/formControls/CheckBox";
+import { API } from "../configs/APIconfig";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
 export default function LoginPage() {
-  const [formData, setFormData] = useState({
+  const initialValues = {
     username: "",
     password: "",
-  });
-
-  const { setUser } = useAuth();
-  const [showPassword, setShowPassword] = useState(false);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
   };
 
-  const navigate = useNavigate();
-
-  const api_endpoint = "http://localhost:8080/TrainingPointSystem/api";
-
-  const handleSubmitForm = (e) => {
-    e.preventDefault();
-
-    fetch(`${api_endpoint}/login`, {
+  const handleSubmitForm = () => {
+    console.log(`${API.login}${isAssistant&&"?assistant"}`);
+    fetch(`${API.login}${isAssistant&&"?assistant"}`, {
       headers: {
         "Content-Type": "application/json",
       },
       method: "POST",
-      body: JSON.stringify(formData),
+      body: JSON.stringify(formik.values),
     })
       .then((res) => {
         if (!res.ok) {
@@ -44,7 +31,9 @@ export default function LoginPage() {
         return res.json();
       })
       .then((data) => {
-        fetch(`${api_endpoint}/user/current`, {
+        localStorage.setItem("USER_TOKEN", data.token);
+
+        fetch(API.currentUser, {
           headers: {
             Authorization: data.token,
           },
@@ -52,7 +41,6 @@ export default function LoginPage() {
           .then((res) => res.json())
           .then((user) => setUser(user));
 
-        localStorage.setItem("USER_TOKEN", data.token);
         navigate("/");
       })
       .catch((e) => {
@@ -60,45 +48,93 @@ export default function LoginPage() {
       });
   };
 
+  const formik = useFormik({
+    initialValues,
+    onSubmit: handleSubmitForm,
+    validationSchema: Yup.object({
+      username: Yup.string()
+        .required("Vui lòng nhập username!")
+        .max(100, "username phải dưới 100 ký tự!"),
+      password: Yup.string()
+        .required("Vui lòng nhập mật khẩu!")
+        .min(6, "Mật khẩu tối thiểu 6 ký tự")
+        .max(8, "Mật khẩu tối đa 10 ký tự"),
+    }),
+  });
+
+  const { setUser } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+  const [isAssistant, setIsAssistant] = useState(false);
+
+  const navigate = useNavigate();
+
   return (
     <>
-      <form className="w-[400px] mx-auto flex flex-col gap-4">
+      <form
+        className="mx-auto flex flex-col gap-4"
+        onSubmit={formik.handleSubmit}
+      >
         <div className="text-blue-700 text-xl text-center font-semibold">
           Đăng nhập
         </div>
-        <FormGroup vertical id="username" label="Username" className="w-full">
+        <FormGroup
+          vertical
+          id="username"
+          label="Username"
+          className="w-full"
+          message={formik.errors.username}
+          touched={formik.touched.username}
+        >
           <Input
             type="text"
             id="username"
-            name="username"
             placeholder="Enter your username"
-            onChange={handleInputChange}
             className="inline-block w-full"
+            {...formik.getFieldProps("username")}
           />
         </FormGroup>
 
-        <FormGroup vertical id="password" label="Password" className=" w-full">
+        <FormGroup
+          vertical
+          id="password"
+          label="Password"
+          className=" w-full"
+          message={formik.errors.password}
+          touched={formik.touched.password}
+        >
           <Input
             type={showPassword ? "text" : "password"}
             id="password"
-            name="password"
             placeholder="Enter your password"
-            onChange={handleInputChange}
             className="inline-block w-full"
+            {...formik.getFieldProps("password")}
           />
         </FormGroup>
+        <CheckBox
+          label="Show password"
+          onClick={() => setShowPassword(!showPassword)}
+        />
 
-        <div className="flex items-center gap-2">
-          <Input
-            type="checkbox"
-            id="showPass"
-            onClick={() => setShowPassword(!showPassword)}
-          />
-          <label htmlFor="showPass"> Show password</label>
+        <PrimaryButton className="w-full mt-2" type="submit">
+          {isAssistant ? "Login as Assistant" : "Login"}
+        </PrimaryButton>
+
+        <div className="border-t border-t-1 my-5 border-t-slate-300 relative">
+          <span className="absolute -top-3 px-3 bg-blue-50 left-1/2 -translate-x-1/2">
+            hoặc{" "}
+          </span>
         </div>
 
-        <PrimaryButton onClick={handleSubmitForm} className="w-full mt-2">
-          Login
+        <PrimaryButton
+          className="w-full bg-white text-slate-950 flex justify-center items-center border border-slate-500 gap-1"
+          type="submit"
+        >
+          Login with
+          <img
+            src="https://cdn-teams-slug.flaticon.com/google.jpg"
+            alt=""
+            className="w-8 h-8 object-cover rounded-full"
+          />
         </PrimaryButton>
 
         <div className="mt-4 text-center">
@@ -107,6 +143,12 @@ export default function LoginPage() {
             {" "}
             Đăng kí
           </NavLink>
+        </div>
+        <div
+          className="text-center text-mainBlue font-semibold cursor-pointer"
+          onClick={() => setIsAssistant(!isAssistant)}
+        >
+          Đăng nhập với vai trò {isAssistant ? "Sinh viên" : "Trợ lý"}
         </div>
       </form>
     </>
