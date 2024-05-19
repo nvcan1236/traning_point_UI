@@ -13,13 +13,12 @@ export default function FormGroup({
   ...props
 }) {
   return (
-    <div>
+    <div className={className}>
       <div
         className={`flex gap-x-4 ${
-          vertical ? "flex-col items-start" : "items-center"
-        }  ${className}`}
+          vertical ? "flex-col items-start" : "items-center"}`}
       >
-        <label htmlFor={id} className="mb-2">
+        <label htmlFor={id} className="mb-1">
           {label}
         </label>
         {props.children}

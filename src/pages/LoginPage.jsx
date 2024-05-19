@@ -15,9 +15,13 @@ export default function LoginPage() {
     password: "",
   };
 
+  const { setUser } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+  const [isAssistant, setIsAssistant] = useState(false);
+
   const handleSubmitForm = () => {
-    console.log(`${API.login}${isAssistant&&"?assistant"}`);
-    fetch(`${API.login}${isAssistant&&"?assistant"}`, {
+    console.log(`${API.login}${isAssistant?"?assistant":""}`);
+    fetch(`${API.login}${isAssistant?"?assistant":""}`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -62,9 +66,7 @@ export default function LoginPage() {
     }),
   });
 
-  const { setUser } = useAuth();
-  const [showPassword, setShowPassword] = useState(false);
-  const [isAssistant, setIsAssistant] = useState(false);
+
 
   const navigate = useNavigate();
 
@@ -126,7 +128,7 @@ export default function LoginPage() {
         </div>
 
         <PrimaryButton
-          className="w-full bg-white text-slate-950 flex justify-center items-center border border-slate-500 gap-1"
+          className="w-full bg-white flex justify-center items-center border border-slate-500 gap-1 !text-slate-950"
           type="submit"
         >
           Login with

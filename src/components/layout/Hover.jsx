@@ -6,7 +6,7 @@ import { useState } from "react";
 export default function Hover({
   componentOnHover,
   children,
-  position = "top",
+  position = "left",
   className,
   ...props
 }) {
@@ -15,12 +15,18 @@ export default function Hover({
   return (
     <div
       className="relative"
-      onMouseEnter={() => setShow(true)}
+      onMouseEnter={() => {
+        setShow(true);
+      }}
       onMouseLeave={() => setShow(false)}
     >
       <div>{children}</div>
       {show && (
-        <div className="absolute top-full z-20">
+        <div
+          className={`absolute top-full z-20 ${
+            position == "left" && "right-0"
+          } ${position == "right" && "left-0"}`}
+        >
           <div className="h-3 w-full "></div>
           {componentOnHover}
         </div>

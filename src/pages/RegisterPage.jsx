@@ -17,6 +17,9 @@ export default function RegisterPage() {
     phone: "",
   };
 
+  const formData = new FormData()
+  formik.values.forEach(v=>formData.append(v))
+
   const handleFormSubmit = () => {
     fetch("http://localhost:8080/TrainingPointSystem/api/user/register", {
       method: "post",

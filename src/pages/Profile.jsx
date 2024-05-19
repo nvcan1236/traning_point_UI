@@ -29,7 +29,6 @@ export default function Profile() {
           type="file"
           accept=".png, .jpg"
           className="border-none invisible hidden mt-4 "
-          acc
           onChange={(e) => {
             if (e.target.files.length > 0) {
               const imageUrl = URL.createObjectURL(e.target.files[0]);
@@ -49,7 +48,7 @@ export default function Profile() {
       </div>
       <div className="flex-1 flex flex-col gap-3 px-24">
         <div className="text-mainBlue flex justify-between items-end ">
-          <Heading>{"Thông tin sinh viên".toUpperCase()}</Heading>
+          <Heading>{"Thông tin hồ sơ".toUpperCase()}</Heading>
           <div
             className="flex gap-2 bg-tintBlue px-2 rounded-md items-center cursor-pointer select-none"
             onClick={() => setEditting(true)}
@@ -72,7 +71,7 @@ export default function Profile() {
             contentEditable={editing}
             className="p-2 outline-1 outline-slate-300"
           >
-            {user.lastName} {user.firstName}
+            {user.gender}
           </span>
         </div>
         <div>
@@ -81,7 +80,7 @@ export default function Profile() {
             contentEditable={editing}
             className="p-2 outline-1 outline-slate-300"
           >
-            {user.lastName} {user.firstName}
+            {user.dob}
           </span>
         </div>
         <div>
@@ -90,7 +89,16 @@ export default function Profile() {
             contentEditable={editing}
             className="p-2 outline-1 outline-slate-300"
           >
-            {user.lastName} {user.firstName}
+            {user.email}
+          </span>
+        </div>
+        <div>
+          Số diện thoại:{" "}
+          <span
+            contentEditable={editing}
+            className="p-2 outline-1 outline-slate-300"
+          >
+            {user.phone}
           </span>
         </div>
         <div>
@@ -99,7 +107,7 @@ export default function Profile() {
             contentEditable={editing}
             className="p-2 outline-1 outline-slate-300"
           >
-            {user.lastName} {user.firstName}
+            CNTT
           </span>
         </div>
         <div>
@@ -109,7 +117,7 @@ export default function Profile() {
             className="p-2 outline-1 outline-slate-300"
           >
             {" "}
-            {user.lastName} {user.firstName}
+            DH21IT01
           </span>
         </div>
         {

@@ -11,7 +11,7 @@ export default function MainLayout() {
     <>
       <Header />
       <div className="flex gap-10 pt-[100px]">
-        <div className={` w-5/6  mx-auto px-8 min-h-[480px] `}>
+        <div className={` lg:w-5/6 w-full  mx-auto px-8 min-h-[480px] `}>
           <Outlet />
         </div>
       </div>

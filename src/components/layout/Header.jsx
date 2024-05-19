@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 // import React from 'react'
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext";
 import PrimaryButton from "../Buttons/PrimaryButton";
 import SelectBox from "../formControls/SelectBox";
@@ -15,10 +15,12 @@ import {
 
 export default function Header() {
   const { user, setUser } = useAuth();
+  const navigate = useNavigate()
 
   const logout = () => {
     setUser({});
     localStorage.removeItem("USER_TOKEN");
+    navigate("/login")
   };
 
   return (
