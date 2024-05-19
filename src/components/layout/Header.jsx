@@ -15,12 +15,12 @@ import {
 
 export default function Header() {
   const { user, setUser } = useAuth();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const logout = () => {
     setUser({});
     localStorage.removeItem("USER_TOKEN");
-    navigate("/login")
+    navigate("/login");
   };
 
   return (
@@ -145,9 +145,13 @@ export default function Header() {
           <SelectBox
             className="rounded-lg py-1 text-sm w-[140px]"
             options={[
-              { id: 1, name: "HK1 - 2024" },
-              { id: 2, name: "HK2 - 2024" },
+              { id: 1, name: "HK1 - 2024", value: 1 },
+              { id: 2, name: "HK2 - 2024", value: 2 },
             ]}
+            name="semester"
+            onChange={(name, value) => {
+              console.log(`${name}: ${value}`);
+            }}
           />
         </li>
       </ul>

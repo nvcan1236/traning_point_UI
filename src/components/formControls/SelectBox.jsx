@@ -47,7 +47,7 @@ export default function SelectBox({
         {selectedValue} <IoChevronDown />
       </div>
       {showOptions && (
-        <ul className="absolute border rounded-sm w-full bg-white mt-1 shadow shadow-tintBlue">
+        <ul className="absolute border rounded-sm w-full bg-white mt-1 shadow shadow-tintBlue z-10">
           {options.map((opt) => (
             <li
               key={opt.id}
