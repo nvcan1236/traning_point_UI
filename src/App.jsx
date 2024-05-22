@@ -28,31 +28,31 @@ function App() {
   const { user, setUser } = useAuth();
   const navigator = useNavigate();
 
-  useEffect(() => {
-    const token = localStorage.getItem("USER_TOKEN");
-    if (token) {
-      fetch(API.currentUser, {
-        headers: {
-          Authorization: token,
-        },
-      })
-        .then((res) => {
-          if (res.ok) {
-            return res.json();
-          } else {
-            navigator("/login");
-            return null;
-          }
-        })
-        .then((user) => setUser(user));
-    } else {
-      // navigator("/login");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("USER_TOKEN");
+  //   if (token) {
+  //     fetch(API.currentUser, {
+  //       headers: {
+  //         Authorization: token,
+  //       },
+  //     })
+  //       .then((res) => {
+  //         if (res.ok) {
+  //           return res.json();
+  //         } else {
+  //           navigator("/login");
+  //           return null;
+  //         }
+  //       })
+  //       .then((user) => setUser(user));
+  //   } else {
+  //     navigator("/login");
+  //   }
+  // }, []);
 
   return (
     <Routes>
-      {user && user?.student && (
+      {user && user.role ==="ROLE_STUDENT" && (
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="post/*" element={<PostPage />} />
@@ -63,7 +63,7 @@ function App() {
         </Route>
       )}
 
-      {user && user?.assistant && (
+      {user && user.role ==="ROLE_ASSISTANT" && (
         <Route path="/" element={<AssistantLayout />}>
           <Route index element={<AssistantHome />} />
           <Route path="profile" element={<Profile />} />
