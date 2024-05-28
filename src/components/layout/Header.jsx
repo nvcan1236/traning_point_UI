@@ -14,12 +14,11 @@ import {
 } from "react-icons/io5";
 
 export default function Header() {
-  const { user, setUser } = useAuth();
+  const { user, dispatch } = useAuth();
   const navigate = useNavigate();
 
   const logout = () => {
-    setUser({});
-    localStorage.removeItem("USER_TOKEN");
+    dispatch({type:"logout"});
     navigate("/login");
   };
 

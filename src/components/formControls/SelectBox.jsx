@@ -7,7 +7,9 @@ export default function SelectBox({
   className,
   onChange,
   onBlur,
-  name,
+  name, 
+  children,
+  ...props
 }) {
   const [selectedValue, setSelectedValue] = useState(options[0].name);
   const [showOptions, setShowOptions] = useState(false);
@@ -43,8 +45,9 @@ export default function SelectBox({
         className={`bg-mainBlue text-white px-4 py-2 rounded-sm w-[150px] flex justify-between items-center ${className}`}
         onClick={() => setShowOptions(true)}
         onBlur={onBlur}
+        {...props}
       >
-        {selectedValue} <IoChevronDown />
+        {selectedValue || {children}} <IoChevronDown />
       </div>
       {showOptions && (
         <ul className="absolute border rounded-sm w-full bg-white mt-1 shadow shadow-tintBlue z-10">
@@ -55,6 +58,7 @@ export default function SelectBox({
               onClick={() => handleSelect(opt)}
             >
               {opt.name}
+
             </li>
           ))}
         </ul>

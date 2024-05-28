@@ -10,46 +10,38 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 export default function LoginPage() {
+  
+
+  const { dispatch } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
+  const [isAssistant, setIsAssistant] = useState(false);
+  const navigate = useNavigate();
+
   const initialValues = {
     username: "",
     password: "",
   };
 
-  const { setUser } = useAuth();
-  const [showPassword, setShowPassword] = useState(false);
-  const [isAssistant, setIsAssistant] = useState(false);
-
-  const handleSubmitForm = () => {
-    console.log(`${API.login}${isAssistant?"?assistant":""}`);
-    fetch(`${API.login}${isAssistant?"?assistant":""}`, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify(formik.values),
-    })
-      .then((res) => {
-        if (!res.ok) {
-          throw new Error("Đăng nhập thất bại!!!");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        localStorage.setItem("USER_TOKEN", data.token);
-
-        fetch(API.currentUser, {
-          headers: {
-            Authorization: data.token,
-          },
-        })
-          .then((res) => res.json())
-          .then((user) => setUser(user));
-
-        navigate("/");
-      })
-      .catch((e) => {
-        alert(e.message);
+  const handleSubmitForm = async () => {
+    try {
+      const response = await fetch(`${API.login}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(formik.values),
       });
+
+      if (!response.ok) {
+        throw new Error("Đăng nhập thất bại !!");
+      }
+
+      const data = await response.json();
+      dispatch({ type: "login", payload: data.token });
+      navigate("/")
+    } catch (ex) {
+      alert(ex.message);
+    }
   };
 
   const formik = useFormik({
@@ -66,9 +58,6 @@ export default function LoginPage() {
     }),
   });
 
-
-
-  const navigate = useNavigate();
 
   return (
     <>

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Route, Routes, useNavigate } from "react-router-dom";
 import MainLayout from "./components/layout/MainLayout";
 import HomePage from "./pages/HomePage";
@@ -25,34 +26,56 @@ import AssistantEditPostPage from "./pages/assistant/AssistantEditPostPage";
 import AssistantDetailMissing from "./pages/assistant/AssistantDetailMissing";
 
 function App() {
-  const { user, setUser } = useAuth();
-  const navigator = useNavigate();
+  const { user, dispatch } = useAuth();
+  const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const token = localStorage.getItem("USER_TOKEN");
-  //   if (token) {
-  //     fetch(API.currentUser, {
-  //       headers: {
-  //         Authorization: token,
-  //       },
-  //     })
-  //       .then((res) => {
-  //         if (res.ok) {
-  //           return res.json();
-  //         } else {
-  //           navigator("/login");
-  //           return null;
-  //         }
-  //       })
-  //       .then((user) => setUser(user));
-  //   } else {
-  //     navigator("/login");
-  //   }
-  // }, []);
+  const token = localStorage.getItem("USER_TOKEN");
+  const getUser = async () => {
+    if (!token) {
+      return null;
+    }
+
+    try {
+      const response = await fetch(API.currentUser, {
+        headers: {
+          Authorization: token,
+        },
+      });
+      if (!response.ok) {
+        throw new Error(`Error: ${response.status}`);
+      }
+      const user = await response.json();
+      return user;
+    } catch (e) {
+      return null;
+    }
+  };
+
+  const fetchUser = async () => {
+    try {
+      const user = await getUser();
+      if (user) {
+        dispatch({ type: "current", payload: user });
+        navigate("/");
+      }
+      else {
+        navigate("/login");
+      }
+    } catch (ex) {
+      console.log("====================================");
+      console.log(ex);
+      console.log("====================================");
+      navigate("/login");
+    }
+  };
+
+  useEffect(() => {
+    fetchUser();
+  }, [token]);
 
   return (
     <Routes>
-      {user && user.role ==="ROLE_STUDENT" && (
+      {user && user.role === "ROLE_STUDENT" && (
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="post/*" element={<PostPage />} />
@@ -63,7 +86,7 @@ function App() {
         </Route>
       )}
 
-      {user && user.role ==="ROLE_ASSISTANT" && (
+      {user && user.role === "ROLE_ASSISTANT" && (
         <Route path="/" element={<AssistantLayout />}>
           <Route index element={<AssistantHome />} />
           <Route path="profile" element={<Profile />} />
