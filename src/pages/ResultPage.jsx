@@ -4,25 +4,37 @@
 import Heading from "../components/layout/Heading";
 import { IoCheckmark, IoCreateOutline } from "react-icons/io5";
 import Chart from "react-google-charts";
+import { useEffect, useState } from "react";
+import { getChartData, getStatsReport } from "../utils/statsUtils";
 
 export default function ResultPage() {
-
-  const data = [
-    ["Điểm các điều", "Đã đăng kí", "Đã xác nhận", "Điểm tối đa"],
-    ["Điều 1", 35, 25, 20],
-    ["Điều 2", 20, 20, 20],
-    ["Điều 3", 50, 45, 25],
-    ["Điều 4", 30, 30, 25],
-  ];
+  const data = [["Điểm các điều", "Đã đăng kí", "Đã xác nhận", "Điểm tối đa"]];
+  const [chartData, setChartData] = useState(data);
+  const [report, setReport] = useState();
 
   const options = {
     chart: {
       title: "Điểm rèn luyện ",
-      subtitle: "Các điều trong học kì 1 2024-2024",
+      subtitle: "Theo điều trong học kì 1 2024-2024",
     },
     colors: ["#ffce3d", "#4daf54", "#f02849"],
-    
   };
+
+  const getChart = async () => {
+    const data = await getChartData();
+    setChartData([...chartData, ...data]);
+  };
+
+  const getReport = async () => {
+    const data = await getStatsReport();
+    console.log(data);
+    setReport(data);
+  };
+
+  useEffect(() => {
+    getChart();
+    getReport();
+  }, []);
 
   return (
     <div className="py-6">
@@ -32,7 +44,7 @@ export default function ResultPage() {
           {/* chart */}
           <div className="w-[720px] ">
             <Chart
-              data={data}
+              data={chartData}
               options={options}
               width="100%"
               height="400px"
@@ -42,115 +54,30 @@ export default function ResultPage() {
 
           {/* detail */}
           <div className="flex-1 mt-6 ml-12 flex flex-col gap-6">
-            <div>
-              <p className="font-medium">Tất cả</p>
-              <div className="flex gap-3 items-center">
-                <IoCreateOutline className="w-6 text-xg text-yellow-600 " />
-                <span className="text-yellow-600"> Đã đăng kí:</span>
-                <span className="cursor-pointer font-medium text-mainBlue">
-                  15
-                </span>{" "}
-                - 65/100 điểm
-              </div>
-              <div className="flex gap-3 items-center">
-                <IoCheckmark className="w-6 text-xl text-green-700 " />
-                <span className="text-green-700">Đã xác nhận:</span>
-                <div>
-                  <span className="cursor-pointer font-medium text-mainBlue">
-                    10
-                  </span>{" "}
-                  - 50/100 điểm
+            {report &&
+              report.map((data) => (
+                <div key={data[0]}>
+                  <p className="font-medium">{data[0]}</p>
+                  <div className="flex gap-3 items-center">
+                    <IoCreateOutline className="w-6 text-xg text-yellow-600 " />
+                    <span className="text-yellow-600"> Đã đăng kí:</span>
+                    <span className="cursor-pointer font-medium text-mainBlue">
+                      {data[2]}
+                    </span>{" "}
+                    - {data[1]}/{data[5]} điểm
+                  </div>
+                  <div className="flex gap-3 items-center">
+                    <IoCheckmark className="w-6 text-xl text-green-700 " />
+                    <span className="text-green-700">Đã xác nhận:</span>
+                    <div>
+                      <span className="cursor-pointer font-medium text-mainBlue">
+                        {data[4]}
+                      </span>{" "}
+                      - {data[3]}/{data[5]} điểm
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-
-            <div>
-              <p className="font-medium">Điều 1</p>
-              <div className="flex gap-3 items-center">
-                <IoCreateOutline className="w-6 text-xg text-yellow-600 " />
-                <span className="text-yellow-600"> Đã đăng kí:</span>
-                <span className="cursor-pointer font-medium text-mainBlue">
-                  15
-                </span>{" "}
-                - 65/100 điểm
-              </div>
-              <div className="flex gap-3 items-center">
-                <IoCheckmark className="w-6 text-xl text-green-700 " />
-                <span className="text-green-700">Đã xác nhận:</span>
-                <div>
-                  <span className="cursor-pointer font-medium text-mainBlue">
-                    10
-                  </span>{" "}
-                  - 50/100 điểm
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <p className="font-medium">Điều 2</p>
-              <div className="flex gap-3 items-center">
-                <IoCreateOutline className="w-6 text-xg text-yellow-600 " />
-                <span className="text-yellow-600"> Đã đăng kí:</span>
-                <span className="cursor-pointer font-medium text-mainBlue">
-                  15
-                </span>{" "}
-                - 65/100 điểm
-              </div>
-              <div className="flex gap-3 items-center">
-                <IoCheckmark className="w-6 text-xl text-green-700 " />
-                <span className="text-green-700">Đã xác nhận:</span>
-                <div>
-                  <span className="cursor-pointer font-medium text-mainBlue">
-                    10
-                  </span>{" "}
-                  - 50/100 điểm
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <p className="font-medium">Điều 3</p>
-              <div className="flex gap-3 items-center">
-                <IoCreateOutline className="w-6 text-xg text-yellow-600 " />
-                <span className="text-yellow-600"> Đã đăng kí:</span>
-                <span className="cursor-pointer font-medium text-mainBlue">
-                  15
-                </span>{" "}
-                - 65/100 điểm
-              </div>
-              <div className="flex gap-3 items-center">
-                <IoCheckmark className="w-6 text-xl text-green-700 " />
-                <span className="text-green-700">Đã xác nhận:</span>
-                <div>
-                  <span className="cursor-pointer font-medium text-mainBlue">
-                    10
-                  </span>{" "}
-                  - 50/100 điểm
-                </div>
-              </div>
-            </div>
-
-            <div>
-              <p className="font-medium">Điều 4</p>
-              <div className="flex gap-3 items-center">
-                <IoCreateOutline className="w-6 text-xg text-yellow-600 " />
-                <span className="text-yellow-600"> Đã đăng kí:</span>
-                <span className="cursor-pointer font-medium text-mainBlue">
-                  15
-                </span>{" "}
-                - 65/100 điểm
-              </div>
-              <div className="flex gap-3 items-center">
-                <IoCheckmark className="w-6 text-xl text-green-700 " />
-                <span className="text-green-700">Đã xác nhận:</span>
-                <div>
-                  <span className="cursor-pointer font-medium text-mainBlue">
-                    10
-                  </span>{" "}
-                  - 50/100 điểm
-                </div>
-              </div>
-            </div>
+              ))}
           </div>
         </div>
       </section>

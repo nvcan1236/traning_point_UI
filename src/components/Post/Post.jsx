@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import Comment from "./Comment";
 import { API } from "../../configs/APIconfig";
 import Loading from "../layout/Loading";
+import { fetchRegister } from "../../hooks/useFetch";
 
 function Post({ post }) {
   const [showComment, setShowComment] = useState(false);
@@ -235,17 +236,9 @@ Post.propTypes = {};
 export default Post;
 
 function Missions({ missionData, setShow, show }) {
-  const fetchRegister = async (missionId) => {
-    const res = await fetch(API.registerMission(missionId), {
-      headers: {
-        Authorization: localStorage.getItem("USER_TOKEN"),
-      },
-      method: "POST"
-    });
-    if(res.ok) {
-      console.log("Đăng ký thàng công")
-      setShow(false)
-    }
+  const handleRegister = async (missionId) => {
+    fetchRegister(missionId)
+    setShow(false)
   };
 
   return (
@@ -256,7 +249,7 @@ function Missions({ missionData, setShow, show }) {
             <li
               key={mission.id}
               className="px-4 py-2 text-sm hover:bg-slate-200 line-clamp-1 overflow-hidden"
-              onClick={()=>fetchRegister(mission.id)}
+              onClick={()=>handleRegister(mission.id)}
             >
               {mission.name}
             </li>

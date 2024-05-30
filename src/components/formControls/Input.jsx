@@ -1,6 +1,9 @@
+/* eslint-disable react/display-name */
 /* eslint-disable react/prop-types */
 
-export default function Input({ type, name, id, className, placeholder, value, ...props }) {
+import { forwardRef } from "react";
+
+const Input = forwardRef( ({ type, name, id, className, placeholder, value, ...props }, ref) => {
   return (
     <input
       className={
@@ -12,7 +15,10 @@ export default function Input({ type, name, id, className, placeholder, value, .
       name={name}
       id={id}
       value={value}
+      ref={ref}
       {...props}
     />
-  );
-}
+  )
+})
+
+export default Input;

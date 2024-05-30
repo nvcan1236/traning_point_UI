@@ -4,9 +4,14 @@ import Input from "../components/formControls/Input";
 import PrimaryButton from "../components/Buttons/PrimaryButton";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { API } from "../configs/APIconfig";
+import { useRef, useState } from "react";
+import Loading from "../components/layout/Loading";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
+  const avatarRef = useRef();
+  const [loading, setLoading ] = useState(false)
 
   const initialValues = {
     firstName: "",
@@ -14,23 +19,25 @@ export default function RegisterPage() {
     username: "",
     password: "",
     email: "",
-    phone: "",
+    // phone: "",
   };
 
-  const formData = new FormData()
-  formik.values.forEach(v=>formData.append(v))
+  
 
   const handleFormSubmit = () => {
-    fetch("http://localhost:8080/TrainingPointSystem/api/user/register", {
+    setLoading(true)
+    const formData = new FormData();
+    Object.keys(formik.values).forEach((key) => formData.append(key, formik.values[key]));
+    formData.append("files", avatarRef.current.files[0])
+    
+    fetch(API.register, {
       method: "post",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formik.values),
+      body: formData,
     })
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        setLoading(false)
         navigate("/login");
       })
       .catch((err) => console.log(err));
@@ -51,121 +58,90 @@ export default function RegisterPage() {
         .required("Vui lòng nhập email")
         .max(100, "Email tối đa 100 ký tự"),
       phone: Yup.string().length(10, "Số điện thoại 10 ký tự"),
+      avatar: Yup.object(),
     }),
   });
 
+  const formFileds = [
+    {
+      name: "lastName",
+      label: "Họ",
+    },
+    {
+      name: "firstName",
+      label: "Tên",
+    },
+
+    {
+      name: "username",
+      label: "Username",
+    },
+    {
+      name: "password",
+      label: "Mật khẩu",
+      type: "password",
+    },
+    {
+      name: "email",
+      label: "Email",
+      type: "email",
+    },
+    {
+      name: "dob",
+      label: "Ngày sinh",
+      type: "date",
+    },
+  ];
+
   return (
-    <>
+    <div className="w-1/3 px-10">
       <form
-        className="mx-auto flex flex-col gap-2"
+        className="mx-auto flex flex-col gap-3 text-sm w-full "
         onSubmit={formik.handleSubmit}
       >
-        <div className="text-blue-700 text-xl text-center font-semibold">
-          Đăng kí
+        <div className="text-mainBlue text-xl text-center font-semibold">
+          Đăng ký tài khoản
         </div>
-        <FormGroup
-          vertical
-          id="firstname"
-          label="First name"
-          className="w-full"
-          message={formik.errors.firstName}
-          touched={formik.touched.firstName}
-        >
-          <Input
-            type="text"
-            id="firstname"
-            placeholder="Enter your firstname"
-            className="inline-block w-full"
-            {...formik.getFieldProps("firstName")}
-          />
-        </FormGroup>
+
+        {formFileds.map((field) => (
+          <FormGroup
+            vertical
+            id={field.name}
+            label={field.label}
+            className="w-full"
+            message={formik.errors[field.name]}
+            touched={formik.touched[field.name]}
+            key={field.name}
+          >
+            <Input
+              type={field?.type || "text"}
+              id={field.name}
+              placeholder={`Nhâp ${field.label.toLowerCase()}`}
+              className="inline-block w-full"
+              {...formik.getFieldProps(field.name)}
+              
+            />
+          </FormGroup>
+        ))}
 
         <FormGroup
           vertical
-          id="lastname"
-          label="Last name"
-          className="w-full"
-          message={formik.errors.lastName}
-          touched={formik.touched.lastName}
-        >
-          <Input
-            type="text"
-            id="lastname"
-            placeholder="Enter your lastname"
-            className="inline-block w-full"
-            {...formik.getFieldProps("lastName")}
-          />
-        </FormGroup>
-
-        <FormGroup
-          vertical
-          id="username"
-          label="Username"
-          className="w-full"
-          message={formik.errors.username}
-          touched={formik.touched.username}
-        >
-          <Input
-            type="text"
-            id="username"
-            placeholder="Enter your username"
-            className="inline-block w-full"
-            {...formik.getFieldProps("username")}
-          />
-        </FormGroup>
-
-        <FormGroup
-          vertical
-          id="password"
-          label="Password"
+          id="avatar"
+          label="Ảnh đại diện"
           className=" w-full"
-          message={formik.errors.password}
-          touched={formik.touched.password}
         >
           <Input
-            type="password"
-            id="password"
-            placeholder="Enter your password"
+            type="file"
+            id="avatar"
             className="inline-block w-full"
-            {...formik.getFieldProps("password")}
+            // {...formik.getFieldProps("files")}
+            ref={avatarRef}
           />
         </FormGroup>
 
-        <FormGroup
-          vertical
-          id="email"
-          label="Email"
-          className=" w-full"
-          message={formik.errors.email}
-          touched={formik.touched.email}
-        >
-          <Input
-            type="email"
-            id="email"
-            placeholder="Enter your email"
-            className="inline-block w-full"
-            {...formik.getFieldProps("email")}
-          />
-        </FormGroup>
-
-        <FormGroup
-          vertical
-          id="phone"
-          label="Phone number"
-          className=" w-full"
-          message={formik.errors.phone}
-          touched={formik.touched.phone}
-        >
-          <Input
-            type="tel"
-            id="phone"
-            placeholder="Enter your phone number"
-            className="inline-block w-full"
-            {...formik.getFieldProps("phone")}
-          />
-        </FormGroup>
-
-        <PrimaryButton type="submit" className="w-full mt-2">Register</PrimaryButton>
+        <PrimaryButton type="submit" className="w-full mt-2">
+          {loading ? <Loading /> :"Register"}
+        </PrimaryButton>
 
         <div className="mt-4 text-center">
           Đã có tài khoản ?
@@ -175,6 +151,6 @@ export default function RegisterPage() {
           </NavLink>
         </div>
       </form>
-    </>
+    </div>
   );
 }

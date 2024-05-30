@@ -6,37 +6,49 @@ import Avatar from "../components/Images/Avatar";
 import Heading from "../components/layout/Heading";
 import CheckBox from "../components/formControls/CheckBox";
 import { API } from "../configs/APIconfig";
+import SecondaryButton from "../components/Buttons/SecondaryButton";
+import {
+  fetchRegister,
+  fetchReportMissing,
+  fetchUserMission,
+} from "../hooks/useFetch";
+import MissingModal from "../components/Activity/MissingModal";
+import { useNavigate } from "react-router-dom";
 
 export default function ActivitiesPage() {
   const [pointGroup, setPointGroup] = useState(0);
   const [missions, setMisions] = useState([]);
   const [isRegisted, setIsRegisted] = useState(false);
+  const navigate = useNavigate();
+  const [showModal, setShowModal] = useState(false);
+  const [missing, setMissing] = useState();
 
-  const fetchActivities = async () => {
-    const res = await fetch(API.userMission, {
-      headers: {
-        Authorization: localStorage.getItem("USER_TOKEN"),
-      },
-    });
-    if (res.ok) {
-      let data = await res.json();
-      if (pointGroup) {
-        data = data.filter(
-          (mission) => mission.mission.activity.pointGroupId == pointGroup
-        );
-      }
-      if (isRegisted) {
-        data = data.filter(
-          (mission) => mission.registerDate != null
-        );
-      }
-      console.log(pointGroup, data);
-      setMisions(data);
+  const handleRegister = async (missionId) => {
+    await fetchRegister(missionId);
+    getActivities();
+  };
+
+  const handleReportMissing = (missionId) => {
+    fetchReportMissing(missionId);
+  };
+
+  const getActivities = async () => {
+    let data = await fetchUserMission();
+    if (pointGroup) {
+      data = data.filter(
+        (mission) => mission.mission.activity.pointGroupId == pointGroup
+      );
     }
+    if (isRegisted) {
+      data = data.filter(
+        (mission) => mission.registerDate != null && mission.active
+      );
+    }
+    setMisions(data);
   };
 
   useEffect(() => {
-    fetchActivities();
+    getActivities();
   }, [pointGroup, isRegisted]);
 
   return (
@@ -83,6 +95,7 @@ export default function ActivitiesPage() {
             <th>Thời gian</th>
             <th>Ngày đăng kí</th>
             {pointGroup == 0 && <th>Điều</th>}
+            <th>Action</th>
           </tr>
         </thead>
         <tbody>
@@ -110,13 +123,34 @@ export default function ActivitiesPage() {
                     {mission.mission.startDate}- {mission.mission.endDate}
                   </td>
                   <td>
-                    {mission.registerDate
+                    {mission.active
                       ? new Date(mission.registerDate).toLocaleDateString("vi")
                       : "Chưa đăng ký"}
                   </td>
                   {pointGroup == 0 && (
                     <td>{mission.mission.activity.pointGroupId}</td>
                   )}
+                  <td className="text-right">
+                    {mission.registerDate && mission.active && (
+                      <SecondaryButton
+                        onClick={() => {
+                          setShowModal(true);
+                          setMissing(mission.mission);
+                        }}
+                      >
+                        Báo thiếu
+                      </SecondaryButton>
+                    )}
+
+                    <PrimaryButton
+                      className={"text-sm py-1 mx-1"}
+                      onClick={() => handleRegister(mission.mission.id)}
+                    >
+                      {mission.registerDate && mission.active
+                        ? "Huỷ"
+                        : "Đăng ký"}
+                    </PrimaryButton>
+                  </td>
                 </tr>
               </Fragment>
             ))
@@ -129,6 +163,13 @@ export default function ActivitiesPage() {
           )}
         </tbody>
       </table>
+      {missing && (
+        <MissingModal
+          show={showModal}
+          setShow={setShowModal}
+          mission={missing}
+        />
+      )}
     </div>
   );
 }

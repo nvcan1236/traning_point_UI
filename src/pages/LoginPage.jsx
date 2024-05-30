@@ -62,7 +62,7 @@ export default function LoginPage() {
   return (
     <>
       <form
-        className="mx-auto flex flex-col gap-4"
+        className="mx-auto flex flex-col gap-4 w-1/3 px-10"
         onSubmit={formik.handleSubmit}
       >
         <div className="text-blue-700 text-xl text-center font-semibold">

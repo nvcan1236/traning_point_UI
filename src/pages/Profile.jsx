@@ -104,7 +104,6 @@ export default function Profile() {
         <div>
           Khoa:{" "}
           <span
-            contentEditable={editing}
             className="p-2 outline-1 outline-slate-300"
           >
             CNTT
@@ -113,10 +112,8 @@ export default function Profile() {
         <div>
           Lớp:
           <span
-            contentEditable={editing}
             className="p-2 outline-1 outline-slate-300"
           >
-            {" "}
             DH21IT01
           </span>
         </div>

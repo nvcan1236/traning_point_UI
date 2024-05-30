@@ -24,6 +24,7 @@ import AssistantMissing from "./pages/assistant/AssistantMissing";
 import AssistantStats from "./pages/assistant/AssistantStats";
 import AssistantEditPostPage from "./pages/assistant/AssistantEditPostPage";
 import AssistantDetailMissing from "./pages/assistant/AssistantDetailMissing";
+import MissingReport from "./pages/MissingReport";
 
 function App() {
   const { user, dispatch } = useAuth();
@@ -81,6 +82,7 @@ function App() {
           <Route path="post/*" element={<PostPage />} />
           <Route path="activities" element={<ActivitiesPage />} />
           <Route path="result/overall" element={<ResultPage />} />
+          <Route path="missing/*" element={<MissingReport />} />
           <Route path="result/detail" element={<DetailResult />} />
           <Route path="profile" element={<Profile />} />
         </Route>
@@ -108,6 +110,7 @@ function App() {
           <Route path="achivement" element={<AssistantAchivement />} />
 
           <Route path="missing" element={<AssistantMissing />} />
+
           <Route path="missing/*" element={<AssistantDetailMissing />} />
           <Route path="missing" element={<AssistantMissing />} />
 
