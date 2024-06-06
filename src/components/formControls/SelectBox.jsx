@@ -21,7 +21,6 @@ export default function SelectBox({
         setShowOptions(false);
       }
     };
-
     document.addEventListener("click", handleClickOutside);
 
     return () => {
@@ -37,13 +36,14 @@ export default function SelectBox({
     onChange(name, option.value);
     setSelectedValue(option.name);
     setShowOptions(false);
+
   };
 
   return (
-    <div className="relative" ref={selectBoxRef}>
+    <div className="relative w-full" ref={selectBoxRef}>
       <div
-        className={`bg-mainBlue text-white px-4 py-2 rounded-sm w-[150px] flex justify-between items-center ${className}`}
-        onClick={() => setShowOptions(true)}
+        className={`bg-mainBlue text-white px-4 py-2 rounded-sm w-full flex justify-between items-center ${className}`}
+        onClick={() => setShowOptions(!showOptions)}
         onBlur={onBlur}
         {...props}
       >
@@ -58,7 +58,6 @@ export default function SelectBox({
               onClick={() => handleSelect(opt)}
             >
               {opt.name}
-
             </li>
           ))}
         </ul>

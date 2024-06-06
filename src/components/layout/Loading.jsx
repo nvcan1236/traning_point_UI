@@ -1,4 +1,5 @@
 /* eslint-disable react/prop-types */
+import '../../style/loading.css'
 export default function Loading({ radius = 24, className }) {
   return (
     <div
@@ -6,7 +7,8 @@ export default function Loading({ radius = 24, className }) {
       width: radius,
       height: radius
     }}
-      className={`border-2  border-t-0 rounded-full border-tintBlue animate-spin mx-auto ${className}`}
+      className={`dashed-loading h-full ${className}`}
+      
     ></div>
   );
 }

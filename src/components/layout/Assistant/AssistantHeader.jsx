@@ -13,8 +13,8 @@ export default function AssistantHeader() {
   };
   return (
     <div className="flex justify-end items-center py-4 gap-3 ">
-      <p className="font-semibold text-mainBlue">
-        Xin chào trợ lý khoa Công nghệ thông tin
+      <p className="font-medium text-mainBlue">
+        Trợ lý khoa Công nghệ thông tin
       </p>
 
       <Hover
@@ -47,9 +47,9 @@ export default function AssistantHeader() {
           </span>
         </NavLink>
       </Hover>
-      <div>
+      <div className="w-[140px] text-sm">
         <SelectBox
-          className="rounded-lg py-1 text-sm w-[140px]"
+          className="rounded-lg py-1 "
           options={[
             { id: 1, name: "HK1 - 2024", value: 1 },
             { id: 2, name: "HK2 - 2024", value: 2 },

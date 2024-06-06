@@ -8,13 +8,13 @@ import CheckBox from "../components/formControls/CheckBox";
 import { API } from "../configs/APIconfig";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import Loading from "../components/layout/Loading";
 
 export default function LoginPage() {
-  
-
   const { dispatch } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isAssistant, setIsAssistant] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const initialValues = {
@@ -23,6 +23,7 @@ export default function LoginPage() {
   };
 
   const handleSubmitForm = async () => {
+    setLoading(true);
     try {
       const response = await fetch(`${API.login}`, {
         headers: {
@@ -38,8 +39,11 @@ export default function LoginPage() {
 
       const data = await response.json();
       dispatch({ type: "login", payload: data.token });
-      navigate("/")
+      setLoading(false);
+      navigate("/");
     } catch (ex) {
+      setLoading(false);
+
       alert(ex.message);
     }
   };
@@ -57,7 +61,6 @@ export default function LoginPage() {
         .max(8, "Mật khẩu tối đa 10 ký tự"),
     }),
   });
-
 
   return (
     <>
@@ -107,7 +110,13 @@ export default function LoginPage() {
         />
 
         <PrimaryButton className="w-full mt-2" type="submit">
-          {isAssistant ? "Login as Assistant" : "Login"}
+          {loading ? (
+            <Loading radius={24} />
+          ) : isAssistant ? (
+            "Login as Assistant"
+          ) : (
+            "Login"
+          )}
         </PrimaryButton>
 
         <div className="border-t border-t-1 my-5 border-t-slate-300 relative">

@@ -1,12 +1,12 @@
 /* eslint-disable no-unused-vars */
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { API } from "../configs/APIconfig";
 
 const CommonContext = createContext();
 
 function CommonProvider(props) {
-  // const [poinrGroups, setPointGroups] = useState([]);
-  // const [faculty, setfaculty] = useState([]);
+  const [pointGroups, setPointGroups] = useState([]);
+  const [faculties, setFaculties] = useState([]);
 
   const getFaculties = async () => {
     const res = await fetch(API.getAllFaculties, {
@@ -15,9 +15,9 @@ function CommonProvider(props) {
       },
     });
 
-    if(res.ok) {
-      const data = await res.json()
-      return data
+    if (res.ok) {
+      const data = await res.json();
+      setFaculties(data);
     }
   };
 
@@ -28,16 +28,18 @@ function CommonProvider(props) {
       },
     });
 
-    if(res.ok) {
-      const data = await res.json()
-      return data;
+    if (res.ok) {
+      const data = await res.json();
+      setPointGroups(data);
     }
   };
 
-  const faculty = getFaculties()
-  const poinrGroups = getAllPointGroup()
+  useEffect(() => {
+    getAllPointGroup();
+    getFaculties();
+  }, []);
 
-  const value = {faculty, poinrGroups};
+  const value = { faculties, pointGroups };
 
   return (
     <CommonContext.Provider value={value} {...props}></CommonContext.Provider>

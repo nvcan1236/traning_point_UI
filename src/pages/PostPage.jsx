@@ -95,10 +95,14 @@ export default function PostPage() {
       </ul>
 
       <div className="ml-[260px] flex flex-col gap-10 flex-1">
-        {posts && posts.length > 0 ? (
-          posts.map((post) => <Post key={post.id} post={post} />)
-        ) : (
-          <Loading className="my-10" />
+        {posts &&
+          posts.length > 0 &&
+          posts.map((post) => <Post key={post.id} post={post} />)}
+        {!posts && <Loading className="my-10" />}
+        {posts && posts == 0 && (
+          <p className="text-center py-40 text-slate-400">
+            (Không có bài đăng)
+          </p>
         )}
       </div>
     </div>

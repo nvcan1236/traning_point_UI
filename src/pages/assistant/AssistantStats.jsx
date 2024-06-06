@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Heading from "../../components/layout/Heading";
 import { Chart } from "react-google-charts";
 import SelectBox from "../../components/formControls/SelectBox";
+import BackButton from "../../components/Buttons/BackButton";
 
 export default function AssistantStats() {
   const [data, setData] = useState([
@@ -25,7 +26,8 @@ export default function AssistantStats() {
 
   return (
     <div className="p-6">
-      <div className="flex gap-10 items-start">
+      <div className="flex gap-10 items-end">
+        <BackButton />
         <Heading>Thống kê kết quả học kỳ</Heading>
         <SelectBox
           options={[

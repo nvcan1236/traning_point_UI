@@ -5,16 +5,19 @@ import Input from "../../components/formControls/Input";
 import Heading from "../../components/layout/Heading";
 import { useNavigate } from "react-router-dom";
 import { IoSaveSharp } from "react-icons/io5";
+import BackButton from "../../components/Buttons/BackButton";
 
 export default function AssistantAchivement() {
   const [student, setStudent] = useState({});
   const [tab, setTab] = useState("activity");
 
   return (
-    <div className="px-6">
+    <div className="p-6">
       <div className="flex flex-col min-h-[600px]">
         <div>
-          <Heading className="font-xl">Hoạt động của sinh viên</Heading>
+          <div className="flex items-end gap-6">
+            <BackButton /> <Heading>Hoạt động của sinh viên</Heading>
+          </div>
           <p className="text-sm text-slate-500 mt-2">
             Tra cứu các hoạt động của sinh viên (các hoạt động đã tham gia, các
             hoạt động báo thiếu, ...)
@@ -24,7 +27,9 @@ export default function AssistantAchivement() {
               <Input type="text" placeholder="MSSV" />{" "}
               <SecondaryButton className="rounded-sm">Tìm kiếm</SecondaryButton>
             </div>
-            <SecondaryButton className='flex items-center gap-2 rounded-sm px-4'><IoSaveSharp /> Lưu báo cáo</SecondaryButton>
+            <SecondaryButton className="flex items-center gap-2 rounded-sm px-4">
+              <IoSaveSharp /> Lưu báo cáo
+            </SecondaryButton>
           </div>
         </div>
 
@@ -116,14 +121,18 @@ export default function AssistantAchivement() {
 
                   {tab == "missing" && (
                     <table className="w-full ">
-                      <tr className="p-3 px-4 hover:bg-slate-100 text-center font-medium text-mainBlue bg-blue-50">
-                        <td className="px-6 w-1/2 text-left">Nhiệm vụ</td>
-                        <td className="py-3 px-6 w-1/4">Ngày yêu cầu</td>
-                        <td className="py-3 px-6 w-1/4">Chi tiết</td>
-                      </tr>
-                      <MissingRow />
-                      <MissingRow />
-                      <MissingRow />
+                      <thead>
+                        <tr className="p-3 px-4 hover:bg-slate-100 text-center font-medium text-mainBlue bg-blue-50">
+                          <td className="px-6 w-1/2 text-left">Nhiệm vụ</td>
+                          <td className="py-3 px-6 w-1/4">Ngày yêu cầu</td>
+                          <td className="py-3 px-6 w-1/4">Chi tiết</td>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <MissingRow />
+                        <MissingRow />
+                        <MissingRow />
+                      </tbody>
                     </table>
                   )}
                 </div>

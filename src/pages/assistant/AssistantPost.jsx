@@ -11,13 +11,16 @@ import { BiLike, BiSolidLike } from "react-icons/bi";
 import { useState } from "react";
 import Comment from "../../components/Post/Comment";
 import { useNavigate } from "react-router-dom";
+import BackButton from "../../components/Buttons/BackButton";
 
 export default function AssistantPost() {
   const navigate = useNavigate();
   return (
     <div className="p-6">
       <div className="flex justify-between items-end">
-        <Heading className='text-xl'>Quản lý bài đăng</Heading>
+        <div className="flex items-end gap-6">
+          <BackButton /> <Heading>Quản lý bài đăng</Heading>
+        </div>
         <PrimaryButton
           className="rounded-sm flex gap-2 items-center"
           onClick={() => {

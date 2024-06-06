@@ -38,7 +38,7 @@ export default function AssistantEditPostPage() {
   return (
     <div className="px-6">
       <Heading className="text-xl">Tạo bài đăng</Heading>
-      <form onSubmit={formik.handleSubmit} className="mt-6 flex flex-col gap-4">
+      <form onSubmit={formik.handleSubmit} className="mt-6 flex flex-col gap-4 w-[600px]">
         <FormGroup
           label="Hoạt động"
           vertical
@@ -50,7 +50,7 @@ export default function AssistantEditPostPage() {
               { id: 1, name: "Hoạt động hiến máu tình nguyện", value: 1 },
               { id: 2, name: "Hoạt động mùa hè xanh", value: 2 },
             ]}
-            className="w-[320px] bg-tintBlue border !text-mainBlue"
+            className=" bg-tintBlue border !text-mainBlue"
             onChange={formik.setFieldValue}
             onBlur={formik.handleBlur}
             name="activity"
@@ -68,7 +68,7 @@ export default function AssistantEditPostPage() {
           <TextArea
             id="content"
             {...formik.getFieldProps("content")}
-            className="w-[600px]"
+            className="w-[600px] h-[200px]"
           ></TextArea>
         </FormGroup>
 

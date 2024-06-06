@@ -30,7 +30,7 @@ function Post({ post }) {
   const [showMissions, setShowMissions] = useState(false);
 
   const handleShowMissions = async () => {
-    const res = await fetch(API.missions(post.activity.id), {
+    const res = await fetch(API.missionsByActivities(post.activity.id), {
       headers: {
         Authorization: localStorage.getItem("USER_TOKEN"),
       },

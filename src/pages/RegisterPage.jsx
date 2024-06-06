@@ -134,7 +134,6 @@ export default function RegisterPage() {
             type="file"
             id="avatar"
             className="inline-block w-full"
-            // {...formik.getFieldProps("files")}
             ref={avatarRef}
           />
         </FormGroup>

@@ -99,13 +99,18 @@ function App() {
             element={<AssistantActivitiesPage />}
           ></Route>
           <Route
-            path="activities/detail/*"
+            path="activities/detail/:activityId"
             element={<AssistantDetailActivity />}
           />
           <Route
-            path="activities/edit/*"
+            path="activities/edit/:activityId"
             element={<AssistantCreateActivity />}
           />
+          <Route
+            path="activities/edit/"
+            element={<AssistantCreateActivity />}
+          />
+          
 
           <Route path="achivement" element={<AssistantAchivement />} />
 

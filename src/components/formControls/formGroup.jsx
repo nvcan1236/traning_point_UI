@@ -18,7 +18,7 @@ export default function FormGroup({
         className={`flex gap-x-4 ${
           vertical ? "flex-col items-start" : "items-center"}`}
       >
-        <label htmlFor={id} className="mb-1 ml-1">
+        <label htmlFor={id} className="mb-1 ml-1 text-slate-500 ">
           {label}
         </label>
         {props.children}
