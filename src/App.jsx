@@ -39,7 +39,7 @@ function App() {
     try {
       const response = await fetch(API.currentUser, {
         headers: {
-          Authorization: token,
+          "Authorization": token,
         },
       });
       if (!response.ok) {
@@ -88,7 +88,7 @@ function App() {
         </Route>
       )}
 
-      {user && user.role === "ROLE_ASSISTANT" && (
+      {user && (user.role === "ROLE_ASSISTANT" || user.role == "ROLE_ADMIN")  && (
         <Route path="/" element={<AssistantLayout />}>
           <Route index element={<AssistantHome />} />
           <Route path="profile" element={<Profile />} />
