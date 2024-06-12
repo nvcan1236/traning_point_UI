@@ -25,12 +25,13 @@ export default function LoginPage() {
 
   const handleSubmitForm = async () => {
     setLoading(true);
-    const formData = new FormData();
-    Object.keys(formik.values).forEach((key) => formData.append(key, formik.values[key]));
     try {
       const response = await fetch(`${API.login}`, {
+        headers: {
+          "Content-Type": "application/json"
+        },
         method: "POST",
-        body: formData,
+        body: JSON.stringify(formik.values),
       });
 
       if (!response.ok) {
