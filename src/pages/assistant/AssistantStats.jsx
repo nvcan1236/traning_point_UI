@@ -29,17 +29,19 @@ export default function AssistantStats() {
       <div className="flex gap-10 items-end">
         <BackButton />
         <Heading>Thống kê kết quả học kỳ</Heading>
-        <SelectBox
-          options={[
-            { id: 1, name: "Tất cả", value: 1 },
-            { id: 2, name: "Kì này", value: 2 },
-            { id: 3, name: "Theo lớp", value: 3 },
-            { id: 4, name: "Theo khoa CNTT", value: 4 },
-          ]}
-          name={"filter"}
-          onChange={() => {}}
-          className='mt-4 w-[200px]'
-        />
+        <div>
+          <SelectBox
+            options={[
+              { id: 1, name: "Tất cả", value: 1 },
+              { id: 2, name: "Kì này", value: 2 },
+              { id: 3, name: "Theo lớp", value: 3 },
+              { id: 4, name: "Theo khoa CNTT", value: 4 },
+            ]}
+            name={"filter"}
+            onChange={() => {}}
+            className='mt-4 !w-[200px]'
+          />
+        </div>
       </div>
       <div className="flex gap-8 mt-20">
         <div className="w-3/5">

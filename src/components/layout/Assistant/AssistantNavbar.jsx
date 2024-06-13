@@ -16,7 +16,7 @@ export default function AssistantNavbar() {
 
   return (
     <div
-      className={` relative transition-all top-0 ${expand ? "w-[280px]" : "w-[80px]"}`}
+      className={` relative z-20 transition-all top-0 ${expand ? "w-[280px]" : "w-[80px]"}`}
     >
       <ul className={`bg-tintBlue text-mainBlue flex flex-col gap-2 h-screen px-4 py-8 fixed transition-all ${expand ? "w-[280px]" : "w-[80px]"}`}>
         <li className="mb-10">

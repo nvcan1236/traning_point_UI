@@ -88,12 +88,12 @@ function App() {
         </Route>
       )}
 
-      {user && user.role === "ROLE_ASSISTANT" && (
+      {user && ["ROLE_ASSISTANT", "ROLE_ADMIN"].includes(user.role)  && (
         <Route path="/" element={<AssistantLayout />}>
           <Route index element={<AssistantHome />} />
           <Route path="profile" element={<Profile />} />
           <Route path="post" element={<AssistantPost />} />
-          <Route path="post/edit/*" element={<AssistantEditPostPage />} />
+          <Route path="post/edit/:postId" element={<AssistantEditPostPage />} />
           <Route
             path="activities"
             element={<AssistantActivitiesPage />}
@@ -116,7 +116,7 @@ function App() {
 
           <Route path="missing" element={<AssistantMissing />} />
 
-          <Route path="missing/*" element={<AssistantDetailMissing />} />
+          <Route path="missing/:missingReportId" element={<AssistantDetailMissing />} />
           <Route path="missing" element={<AssistantMissing />} />
 
           <Route path="stats" element={<AssistantStats />} />

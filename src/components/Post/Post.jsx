@@ -15,6 +15,9 @@ import Comment from "./Comment";
 import { API } from "../../configs/APIconfig";
 import Loading from "../layout/Loading";
 import { fetchRegister } from "../../hooks/useFetch";
+import { useAuth } from "../../contexts/authContext";
+import SecondaryButton from "../Buttons/SecondaryButton";
+import { useNavigate } from "react-router-dom";
 
 function Post({ post }) {
   const [showComment, setShowComment] = useState(false);
@@ -28,6 +31,7 @@ function Post({ post }) {
   });
   const [missions, setMissions] = useState([]);
   const [showMissions, setShowMissions] = useState(false);
+  const navigate = useNavigate();
 
   const handleShowMissions = async () => {
     const res = await fetch(API.missionsByActivities(post.activity.id), {
@@ -106,6 +110,8 @@ function Post({ post }) {
     }
   };
 
+  const { user } = useAuth();
+
   useEffect(() => {
     showComment && fetchComments();
     showMissions && handleShowMissions();
@@ -124,31 +130,50 @@ function Post({ post }) {
         navigation={true}
         modules={[Pagination, Navigation]}
       >
-        {[1, 2, 3].map((i) => (
-          <SwiperSlide key={i}>
-            <img
-              src="https://res.cloudinary.com/dbd7vfk12/image/upload/v1716751285/uqmgkeumvtrvvbr1n7cn.jpg"
-              alt=""
-              className="select-none max-h-[400px] mx-auto"
-            />
-          </SwiperSlide>
-        ))}
+        {post.images.length === 0 &&
+          [1, 2, 3].map((i) => (
+            <SwiperSlide key={i}>
+              <img
+                src="https://res.cloudinary.com/dbd7vfk12/image/upload/v1716751285/uqmgkeumvtrvvbr1n7cn.jpg"
+                alt=""
+                className="select-none max-h-[280px] w-full object-contain mx-auto px-10 mb-10"
+              />
+            </SwiperSlide>
+          ))}
+        {post.images.length > 0 &&
+          post.images.map((image) => (
+            <SwiperSlide key={image.id}>
+              <img
+                src={image.url}
+                alt=""
+                className="select-none max-h-[280px] w-full object-contain mx-auto px-10 mb-10"
+              />
+            </SwiperSlide>
+          ))}
       </Swiper>
 
       <div className="w-1/2 flex flex-col gap-3 px-3">
         <div className="flex items-center gap-3">
           <Avatar src={post.assistant.avatar} radius={40} />
-          <div>
+          <div className="flex-1">
             <span className="font-medium">{`${post.assistant.lastName} ${post.assistant.firstName}`}</span>{" "}
             <br />{" "}
             <span>{new Date(post.createdDate).toLocaleDateString("vi")}</span>
           </div>
+          {["ROLE_ASSISTANT", "ROLE_ADMIN"].includes(user.role) && (
+            <SecondaryButton
+              className={"py-[2px] px-4 text-sm rounded-sm"}
+              onClick={() => navigate(`./edit/${post.id}`)}
+            >
+              Edit
+            </SecondaryButton>
+          )}
         </div>
 
         <div className="flex-1">
           <h3>
             Khoa {post.assistant.faculty} - Điểm rèn luyện điều{" "}
-            {post.activity.pointGroupId}
+            {post.activity.pointGroup}
           </h3>
           <h3 className="font-semibold text-base">{post.activity.name}</h3>
           <p className={`${!showFullContent && "line-clamp-5"}`}>
@@ -182,15 +207,21 @@ function Post({ post }) {
             <span>{interaction.commentCount} Bình luận</span>
           </div>
 
-          <div className="relative">
-            <PrimaryButton
-              className="px-6 !py-2 text-sm"
-              onClick={() => setShowMissions(!showMissions)}
-            >
-              Tham gia
-            </PrimaryButton>
-            <Missions show={showMissions} setShow={setShowMissions} missionData={missions} />
-          </div>
+          {user.role === "ROLE_STUDENT" && (
+            <div className="relative">
+              <PrimaryButton
+                className="px-6 !py-2 text-sm"
+                onClick={() => setShowMissions(!showMissions)}
+              >
+                Tham gia
+              </PrimaryButton>
+              <Missions
+                show={showMissions}
+                setShow={setShowMissions}
+                missionData={missions}
+              />
+            </div>
+          )}
         </div>
         <div className="flex items-center gap-4">
           <Input
@@ -237,19 +268,23 @@ export default Post;
 
 function Missions({ missionData, setShow, show }) {
   const handleRegister = async (missionId) => {
-    fetchRegister(missionId)
-    setShow(false)
+    fetchRegister(missionId);
+    setShow(false);
   };
 
   return (
-    <div className={`border rounded-sm w-[200px] p-2 absolute bg-white right-0 mt-2 ${!show&&"hidden"}`}>
+    <div
+      className={`border rounded-sm w-[200px] p-2 absolute bg-white right-0 mt-2 ${
+        !show && "hidden"
+      }`}
+    >
       <ul>
         {missionData?.length > 0 &&
           missionData.map((mission) => (
             <li
               key={mission.id}
               className="px-4 py-2 text-sm hover:bg-slate-200 line-clamp-1 overflow-hidden"
-              onClick={()=>handleRegister(mission.id)}
+              onClick={() => handleRegister(mission.id)}
             >
               {mission.name}
             </li>

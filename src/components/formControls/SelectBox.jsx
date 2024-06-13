@@ -9,9 +9,10 @@ export default function SelectBox({
   onBlur,
   name, 
   children,
+  value,
   ...props
 }) {
-  const [selectedValue, setSelectedValue] = useState(options[0].name);
+  const [selectedValue, setSelectedValue] = useState(value?value:options[0]?.name);
   const [showOptions, setShowOptions] = useState(false);
   const selectBoxRef = useRef();
 
@@ -29,8 +30,9 @@ export default function SelectBox({
   }, [selectBoxRef]);
 
   useEffect(() => {
-    onChange(name, options[0].value);
-  }, []);
+    options && onChange(name, options[0].value);
+    value && setSelectedValue(value)
+  }, [value]);
 
   const handleSelect = (option) => {
     onChange(name, option.value);
@@ -42,15 +44,15 @@ export default function SelectBox({
   return (
     <div className="relative w-full" ref={selectBoxRef}>
       <div
-        className={`bg-mainBlue text-white px-4 py-2 rounded-sm w-full flex justify-between items-center ${className}`}
+        className={`bg-mainBlue text-white px-4 py-2 rounded-sm w-full flex justify-between items-center line-clamp-1 ${className?className:""}`}
         onClick={() => setShowOptions(!showOptions)}
         onBlur={onBlur}
         {...props}
       >
         {selectedValue || {children}} <IoChevronDown />
       </div>
-      {showOptions && (
-        <ul className="absolute border rounded-sm w-full bg-white mt-1 shadow shadow-tintBlue z-10">
+      {showOptions && options && (
+        <ul className="absolute border rounded-sm w-full bg-white mt-1 shadow shadow-tintBlue z-10 max-h-[300px] overflow-y-auto">
           {options.map((opt) => (
             <li
               key={opt.id}

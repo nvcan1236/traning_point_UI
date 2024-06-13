@@ -106,7 +106,7 @@ export default function Profile() {
           <span
             className="p-2 outline-1 outline-slate-300"
           >
-            CNTT
+            {user.faculty.name}
           </span>
         </div>
         <div>

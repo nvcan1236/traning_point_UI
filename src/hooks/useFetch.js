@@ -129,6 +129,27 @@ const fetchAddActivity = async (bodyData) => {
   }
 };
 
+const fetchUpdateActivity = async (bodyData, activityId) => {
+  try {
+    const res = await fetch(API.updateActivity(activityId), {
+      headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bodyData),
+      method: "PUT",
+    });
+
+    if (!res.ok) {
+      throw new Error("Something went wrong!!!");
+    }
+    const data = await res.json();
+    return data;
+  } catch (ex) {
+    console.log(ex);
+  }
+};
+
 const fetchAddMission = async (bodyData, activityId) => {
   try {
     const res = await fetch(API.addMission(activityId), {
@@ -150,6 +171,167 @@ const fetchAddMission = async (bodyData, activityId) => {
   }
 };
 
+const fetchUpdateMission = async (bodyData, missionId) => {
+  try {
+    const res = await fetch(API.updateMission(missionId), {
+      headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bodyData),
+      method: "PUT",
+    });
+
+    if (!res.ok) {
+      throw new Error("Something went wrong!!!");
+    }
+    const data = await res.json();
+    return data;
+  } catch (ex) {
+    console.log(ex);
+  }
+};
+
+const fetchPosts = async () => {
+  try {
+    const res = await fetch(API["getPost"], {
+      headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+      },
+    });
+    if (!res.ok) {
+      throw new Error("Something went wrong!!");
+    }
+    const data = await res.json();
+    return data;
+  } catch (ex) {
+    console.log(ex);
+  }
+};
+const fetchAddPost = async (post) => {
+  try {
+    const formData = new FormData();
+    formData.append("content", post.content);
+    formData.append("activity", post.activity);
+    Array.from(post.images).forEach((image) =>
+      formData.append("images", image)
+    );
+    console.log(formData.images);
+    const res = await fetch(API.getPost, {
+      headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+      },
+      method: "POST",
+      body: formData,
+    });
+    if (!res.ok) {
+      throw new Error("Something went wrong!!");
+    }
+    const data = await res.json();
+    return data;
+  } catch (ex) {
+    console.log(ex);
+  }
+};
+
+const fetchDetailPost = async (postId) => {
+  try {
+    const res = await fetch(API.detailPost(postId), {
+      headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+      },
+      method: "GET",
+    });
+    if (!res.ok) {
+      throw new Error("Something went wrong!!");
+    }
+    const data = await res.json();
+    return data;
+  } catch (ex) {
+    console.log(ex);
+  }
+};
+
+const fetchUpdatePost = async (post, postId) => {
+  try {
+    // const formData = new FormData();
+    // formData.append("content", post.content)
+    // formData.append("activity", post.activity)
+    // Array.from(post.images).forEach(image => formData.append("images", image))
+    const res = await fetch(API.detailPost(postId), {
+      headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+      body: JSON.stringify(post),
+    });
+    if (!res.ok) {
+      throw new Error("Something went wrong!!");
+    }
+    const data = await res.json();
+    return data;
+  } catch (ex) {
+    console.log(ex);
+  }
+};
+
+const fetchGetMissingReportByFaculty = async (facultyId) => {
+  try {
+    const res = await fetch(API.getMissingReport(facultyId), {
+      headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+      },
+      method: "GET",
+    });
+    if (!res.ok) {
+      throw new Error("Something went wrong!!");
+    }
+    const data = await res.json();
+    return data;
+  } catch (ex) {
+    console.log(ex);
+  }
+};
+
+const fetchGetDetailMissingReport = async (missingReportId) => {
+  try {
+    const res = await fetch(API.getDetailMissingReport(missingReportId), {
+      headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+      },
+      method: "GET",
+    });
+    if (!res.ok) {
+      throw new Error("Something went wrong!!");
+    }
+    const data = await res.json();
+    return data;
+  } catch (ex) {
+    console.log(ex);
+  }
+};
+
+const fetchUpdateStatusMissingReport = async (missingReportId, bodyData) => {
+  try {
+    const res = await fetch(API.getDetailMissingReport(missingReportId), {
+      headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+        "Content-Type": "application/json"
+      },
+      method: "POST",
+      body: JSON.stringify(bodyData)
+    });
+    if (!res.ok) {
+      throw new Error("Something went wrong!!");
+    }
+    const data = await res.json();
+    return data;
+  } catch (ex) {
+    console.log(ex);
+  }
+};
+
 export {
   fetchRegister,
   fetchReportMissing,
@@ -159,5 +341,14 @@ export {
   fetchActivities,
   fetchDetailActivity,
   fetchAddActivity,
+  fetchUpdateActivity,
   fetchAddMission,
+  fetchUpdateMission,
+  fetchPosts,
+  fetchAddPost,
+  fetchDetailPost,
+  fetchUpdatePost,
+  fetchGetMissingReportByFaculty,
+  fetchGetDetailMissingReport,
+  fetchUpdateStatusMissingReport,
 };

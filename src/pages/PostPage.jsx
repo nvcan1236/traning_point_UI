@@ -4,8 +4,8 @@
 import { NavLink } from "react-router-dom";
 import Post from "../components/Post/Post";
 import { useEffect, useState } from "react";
-import { API } from "../configs/APIconfig";
 import Loading from "../components/layout/Loading";
+import { fetchPosts } from "../hooks/useFetch";
 
 export default function PostPage() {
   const [posts, setPosts] = useState([]);
@@ -53,23 +53,13 @@ export default function PostPage() {
     setPosts(filteredPosts);
   };
 
-  const fetchPosts = async () => {
-    const response = await fetch(API["getPost"], {
-      headers: {
-        Authorization: localStorage.getItem("USER_TOKEN"),
-      },
-    });
-    if (!response.ok) {
-      throw new Error("Something went wrong!!");
-    }
-    const posts = await response.json();
-    setPosts(posts);
-    setOriginPosts(posts);
+  const getPosts = async () => {
+    const data = await fetchPosts();
+    setPosts(data);
   };
-
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+  useEffect(()=> {
+    getPosts()
+  }, [])
 
   return (
     <div className="flex justify-between">

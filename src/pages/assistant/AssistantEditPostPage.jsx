@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
+import { useEffect, useRef, useState } from "react";
 import PrimaryButton from "../../components/Buttons/PrimaryButton";
-import FileInput from "../../components/formControls/FileInput";
 import FormGroup from "../../components/formControls/FormGroup";
 import Input from "../../components/formControls/Input";
 import SelectBox from "../../components/formControls/SelectBox";
@@ -8,6 +8,15 @@ import TextArea from "../../components/formControls/TextArea";
 import Heading from "../../components/layout/Heading";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import {
+  fetchActivities,
+  fetchAddPost,
+  fetchDetailPost,
+  fetchUpdatePost,
+} from "../../hooks/useFetch";
+import Loading from "../../components/layout/Loading";
+import ToastMessage from "../../components/layout/ToastMessage";
+import { useParams } from "react-router-dom";
 
 export default function AssistantEditPostPage() {
   const initialValues = {
@@ -15,18 +24,61 @@ export default function AssistantEditPostPage() {
     activity: "",
     images: "",
   };
+  const imageInputRef = useRef();
+  const [loading, setLoading] = useState(false);
+  const [showToast, setShowToast] = useState(0);
+  const [toastMessage, setToastMessage] = useState("");
+  const [postEdit, setPostEdit] = useState();
+  const { postId } = useParams();
+  const [activities, setActivities] = useState();
 
-  const handleFormSubmit = () => {
-    console.log(formik.values);
+  const handleFormSubmit = async () => {
+    if (formik.values.images?.length === 0) {
+      formik.setFieldError("images", "Vui lòng chọn ảnh bài đăng!!!");
+    } else {
+      formik.setFieldValue("images", imageInputRef.current.files);
+      setLoading(true);
+      if (postId) {
+        await fetchUpdatePost(
+          { content: formik.values.content, activity: formik.values.activity },
+          postId
+        );
+        setToastMessage("Cập nhật bài đăng thành công");
+      } else {
+        await fetchAddPost(formik.values);
+        setToastMessage("Đăng bài thành công");
+      }
+      setLoading(false);
+      setShowToast((prev) => prev + 1);
+    }
   };
+
+  const getActivities = async () => {
+    const data = await fetchActivities();
+    setActivities(data);
+  };
+
+  const getPostEdit = async (postId) => {
+    const data = await fetchDetailPost(postId);
+    setPostEdit(data);
+    formik.setValues({
+      content: data.content,
+      activity: data.activity.id,
+    });
+  };
+
+  useEffect(() => {
+    getActivities();
+    postId && getPostEdit(postId);
+  }, [postId]);
 
   const validationSchema = Yup.object({
     content: Yup.string()
       .required("Vui lòng nhập nội dung!")
-      .max(500, "Nội dung phải dưới 500 ký tự!")
+      .max(2000, "Nội dung phải dưới 2000 ký tự!")
       .min(20, "Nội dung tối thiểu 20 ký tự"),
     activity: Yup.string().required("Vui lòng chọn hoạt động!"),
-    images: Yup.mixed().required("Bài đăng tối thiểu 1 ảnh"),
+    // images: Yup.object().required("Bài đăng tối thiểu 1 ảnh"),
   });
 
   const formik = useFormik({
@@ -36,9 +88,18 @@ export default function AssistantEditPostPage() {
   });
 
   return (
-    <div className="px-6">
+    <div className="p-6">
+      <ToastMessage
+        message={toastMessage}
+        type="success"
+        show={showToast}
+        duration={5000}
+      />
       <Heading className="text-xl">Tạo bài đăng</Heading>
-      <form onSubmit={formik.handleSubmit} className="mt-6 flex flex-col gap-4 w-[600px]">
+      <form
+        onSubmit={formik.handleSubmit}
+        className="mt-6 flex flex-col gap-4 w-[600px]"
+      >
         <FormGroup
           label="Hoạt động"
           vertical
@@ -46,14 +107,16 @@ export default function AssistantEditPostPage() {
           touched={formik.touched.activity}
         >
           <SelectBox
-            options={[
-              { id: 1, name: "Hoạt động hiến máu tình nguyện", value: 1 },
-              { id: 2, name: "Hoạt động mùa hè xanh", value: 2 },
-            ]}
+            options={activities?.map((activity) => ({
+              name: activity.name,
+              id: activity.id,
+              value: activity.id,
+            }))}
             className=" bg-tintBlue border !text-mainBlue"
             onChange={formik.setFieldValue}
             onBlur={formik.handleBlur}
             name="activity"
+            value={postEdit?.activity.name || "Hoạt động rèn luyện"}
           />
         </FormGroup>
 
@@ -81,23 +144,53 @@ export default function AssistantEditPostPage() {
           touched={formik.touched.images}
         >
           {formik.values.images && (
-            <img
-              src={URL.createObjectURL(formik.values.images)}
-              alt="post image"
-              className="h-[300px] max-w-[600px] object-contain mb-2"
-            />
+            <div className="w-[600px] overflow-x-auto flex gap-2 mb-4">
+              {Array.from(formik.values.images).map((image) => (
+                <img
+                  key={image.name}
+                  src={URL.createObjectURL(image)}
+                  alt="post image"
+                  className="h-[150px] max-w-[300px] object-contain mb-2"
+                />
+              ))}
+            </div>
           )}
-          <FileInput
+
+          {postEdit?.images.length > 0 && (
+            <div className="w-[600px] overflow-x-auto flex gap-2 mb-4">
+              {postEdit.images.map((image) => (
+                <img
+                  key={image.id}
+                  src={image.url}
+                  alt="post image"
+                  className="h-[150px] max-w-[300px] object-contain mb-2"
+                />
+              ))}
+            </div>
+          )}
+
+          <Input
             id="images"
+            type="file"
+            multiple="true"
             name="images"
             onBlur={formik.handleBlur}
-            onChange={formik.setFieldValue}
+            onChange={() =>
+              formik.setFieldValue("images", imageInputRef.current.files)
+            }
+            ref={imageInputRef}
           />
         </FormGroup>
 
-        <div className="flex ">
-          <PrimaryButton type="submit" className="mt-4 rounded-sm">
-            Đăng bài
+        <div className="flex">
+          <PrimaryButton type="submit" className="mt-4 rounded-sm w-[120px]">
+            {loading ? (
+              <Loading radius={20} />
+            ) : postId ? (
+              "Cập nhật"
+            ) : (
+              "Đăng bài"
+            )}
           </PrimaryButton>
         </div>
       </form>

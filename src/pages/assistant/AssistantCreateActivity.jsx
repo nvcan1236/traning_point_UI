@@ -8,7 +8,7 @@ import Heading from "../../components/layout/Heading";
 import AssistantMissionEdit from "./AsssistantMissionEdit";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { fetchAddActivity, fetchDetailActivity } from "../../hooks/useFetch";
+import { fetchAddActivity, fetchDetailActivity, fetchUpdateActivity } from "../../hooks/useFetch";
 import { useNavigate, useParams } from "react-router-dom";
 import SelectBox from "../../components/formControls/SelectBox";
 import { useCommon } from "../../contexts/commonContext";
@@ -19,13 +19,19 @@ export default function AssistantCreateActivity() {
     faculty: "",
     semester: 1,
     pointGroup: "",
-    maxPoint: 0
+    maxPoint: 0,
   };
-  const navigate = useNavigate()
+  const navigate = useNavigate();
+  const { activityId } = useParams();
+
   const handleSubmitActivity = async () => {
     console.log(formik.values);
-    const data = await fetchAddActivity(formik.values);
-    navigate(`./${data?.id}`)
+    if (activityId) {
+      await fetchUpdateActivity(formik.values, activityId)
+    } else {
+      const data = await fetchAddActivity(formik.values);
+      navigate(`./${data?.id}`);
+    }
   };
 
   const validationSchema = Yup.object({
@@ -52,17 +58,16 @@ export default function AssistantCreateActivity() {
       faculty: 1,
       semester: 1,
       pointGroup: data.pointGroup.id,
-      maxPoint: data.maxPoint
+      maxPoint: data.maxPoint,
     });
     setActivity(data);
   };
 
-  const { activityId } = useParams();
   const { faculties, pointGroups } = useCommon();
 
   useEffect(() => {
     activityId && getActivity(activityId);
-  }, [activityId, ]);
+  }, [activityId, missionEditing]);
 
   return (
     <div className="p-6">
@@ -101,7 +106,7 @@ export default function AssistantCreateActivity() {
                   onChange={formik.setFieldValue}
                   onBlur={formik.handleBlur}
                   name="faculty"
-                  className={"text-sm bg-white text-black border"}
+                  className={"text-sm !bg-white !text-black border"}
                 ></SelectBox>
               </FormGroup>
 
@@ -135,7 +140,8 @@ export default function AssistantCreateActivity() {
                   onChange={formik.setFieldValue}
                   onBlur={formik.handleBlur}
                   name="pointGroup"
-                  className={"w-full  text-sm bg-white text-black border"}
+                  value={activity?.pointGroup.name}
+                  className={"w-full  text-sm !bg-white !text-black border"}
                 ></SelectBox>
               </FormGroup>
 
@@ -199,7 +205,10 @@ export default function AssistantCreateActivity() {
         <div className="w-[0.5px] bg-mainBlue mt-6"></div>
 
         <div className="w-1/2">
-            <AssistantMissionEdit missionData={missionEditing} />
+          <AssistantMissionEdit
+            missionData={missionEditing}
+            setMissionEditing={setMissionEditing}
+          />
         </div>
       </div>
     </div>

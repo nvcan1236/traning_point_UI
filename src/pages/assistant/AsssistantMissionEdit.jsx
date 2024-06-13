@@ -7,12 +7,12 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchAddMission } from "../../hooks/useFetch";
+import { fetchAddMission, fetchUpdateMission } from "../../hooks/useFetch";
 import Heading from "../../components/layout/Heading";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import { IoAddSharp } from "react-icons/io5";
 
-export default function AssistantMissionEdit({ missionData }) {
+export default function AssistantMissionEdit({ missionData, setMissionEditing }) {
   const initialValues = {
     name: "",
     content: "",
@@ -28,8 +28,20 @@ export default function AssistantMissionEdit({ missionData }) {
     if (!activityId) {
       alert("Vui lòng tạo hoạt động trước");
     }
-    formik.setValues(initialValues);
-    fetchAddMission(formik.values, activityId);
+    formik.resetForm()
+    
+    
+    if(isCreate) {
+      fetchAddMission(formik.values, activityId);
+    }
+    else {
+      fetchUpdateMission(formik.values, missionData.id)
+    }
+
+    setTimeout(()=> {
+      setMissionEditing(null)
+      setIsCreate(true)
+    }, 300)
   };
 
   const validationSchema = Yup.object({
@@ -53,6 +65,7 @@ export default function AssistantMissionEdit({ missionData }) {
   useEffect(() => {
     if (missionData) {
       formik.setValues(missionData);
+      formik.setFieldValue("activity", missionData.activity.id)
       setIsCreate(false);
     }
   }, [missionData]);
