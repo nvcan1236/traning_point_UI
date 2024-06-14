@@ -36,7 +36,7 @@ export default function ActivitiesPage() {
     let data = await fetchUserMission();
     if (pointGroup) {
       data = data.filter(
-        (mission) => mission.mission.activity.pointGroupId == pointGroup
+        (mission) => mission.mission.activity.pointGroup == pointGroup
       );
     }
     if (isRegisted) {
@@ -128,7 +128,7 @@ export default function ActivitiesPage() {
                       : "Chưa đăng ký"}
                   </td>
                   {pointGroup == 0 && (
-                    <td>{mission.mission.activity.pointGroupId}</td>
+                    <td>{mission.mission.activity.pointGroup}</td>
                   )}
                   <td className="text-right">
                     {mission.registerDate && mission.active && (

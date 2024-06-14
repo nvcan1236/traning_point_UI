@@ -48,6 +48,7 @@ export default function PostPage() {
         });
         break;
       case "all":
+
         break;
     }
     setPosts(filteredPosts);
@@ -56,6 +57,7 @@ export default function PostPage() {
   const getPosts = async () => {
     const data = await fetchPosts();
     setPosts(data);
+    setOriginPosts(data)
   };
   useEffect(()=> {
     getPosts()

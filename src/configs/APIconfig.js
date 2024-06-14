@@ -17,6 +17,7 @@ export const API = {
   detailPost: (postId) => `${baseURL}/posts/${postId}`,
   comments: (postId) => `${baseURL}/posts/${postId}/comments`,
   likePost: (postId) => `${baseURL}/posts/${postId}/like`,
+  deletePost: (postId) => `${baseURL}/posts/${postId}`,
 
   // ACTIVITY
   getAllActivities: (kw = "") => `${baseURL}/activities?kw=${kw}`,
@@ -25,11 +26,13 @@ export const API = {
   addActivity: (pointGroupId) =>
     `${baseURL}/point-groups/${pointGroupId}/activities`,
   updateActivity: (activityId) => `${baseURL}/activities/${activityId}`,
+  deletelActivity: (id) => `${baseURL}/activities/${id}`,
 
   // MIISIONS
   registerMission: (missionId) => `${baseURL}/missions/${missionId}/register`,
   addMission: (activityId) => `${baseURL}/activities/${activityId}/missions`,
   updateMission: (missionId) => `${baseURL}/missions/${missionId}`,
+  deleteMission: (missionId) => `${baseURL}/missions/${missionId}`,
   reportMissing: (missionId) => `${baseURL}/missions/${missionId}/missing`,
   missionsByActivities: (activityId) =>
     `${baseURL}/activities/${activityId}/missions`,

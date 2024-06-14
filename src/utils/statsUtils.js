@@ -15,7 +15,7 @@ const getChartData = async () => {
     }
 
     pointGroups.forEach((pg) => {
-      if (current.mission.activity.pointGroupId === pg.id) {
+      if (current.mission.activity.pointGroup === pg.id) {
         acc[pg.id][1] += current.mission.point;
         if (current.isCompleted) {
           acc[pg.id][2] += current.mission.point;
@@ -45,7 +45,7 @@ const getStatsReport = async () => {
     }
 
     pointGroups.forEach((pg) => {
-      if (current.mission.activity.pointGroupId === pg.id) {
+      if (current.mission.activity.pointGroup === pg.id) {
         acc[pg.id][1] += current.mission.point;
         acc[pg.id][2] ++;
         if (current.isCompleted) {

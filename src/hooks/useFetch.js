@@ -276,6 +276,60 @@ const fetchUpdatePost = async (post, postId) => {
   }
 };
 
+const fetchDeleteActivity = async (activityId) => {
+  try {
+    const res = await fetch(API.deletelActivity(activityId), {
+      headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+      },
+      method: "DELETE",
+    });
+    if (!res.ok) {
+      throw new Error("Something went wrong!!");
+    }
+    const data = await res.json();
+    return data;
+  } catch (ex) {
+    console.log(ex);
+  }
+};
+
+const fetchDeleteMission = async (missionId) => {
+  try {
+    const res = await fetch(API.deleteMission(missionId), {
+      headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+      },
+      method: "DELETE",
+    });
+    if (!res.ok) {
+      throw new Error("Something went wrong!!");
+    }
+    const data = await res.json();
+    return data;
+  } catch (ex) {
+    console.log(ex);
+  }
+};
+
+const fetchDeletePost = async (postId) => {
+  try {
+    const res = await fetch(API.deletePost(postId), {
+      headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+      },
+      method: "DELETE",
+    });
+    if (!res.ok) {
+      throw new Error("Something went wrong!!");
+    }
+    const data = await res.json();
+    return data;
+  } catch (ex) {
+    console.log(ex);
+  }
+};
+
 const fetchGetMissingReportByFaculty = async (facultyId) => {
   try {
     const res = await fetch(API.getMissingReport(facultyId), {
@@ -351,4 +405,7 @@ export {
   fetchGetMissingReportByFaculty,
   fetchGetDetailMissingReport,
   fetchUpdateStatusMissingReport,
+  fetchDeleteActivity, 
+  fetchDeleteMission,
+  fetchDeletePost
 };

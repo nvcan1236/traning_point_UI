@@ -11,8 +11,12 @@ import { fetchAddMission, fetchUpdateMission } from "../../hooks/useFetch";
 import Heading from "../../components/layout/Heading";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import { IoAddSharp } from "react-icons/io5";
+import TransparentButton from "../../components/Buttons/TransparentButton";
 
-export default function AssistantMissionEdit({ missionData, setMissionEditing }) {
+export default function AssistantMissionEdit({
+  missionData,
+  setMissionEditing,
+}) {
   const initialValues = {
     name: "",
     content: "",
@@ -28,20 +32,18 @@ export default function AssistantMissionEdit({ missionData, setMissionEditing })
     if (!activityId) {
       alert("Vui lòng tạo hoạt động trước");
     }
-    formik.resetForm()
-    
-    
-    if(isCreate) {
+    formik.resetForm();
+
+    if (isCreate) {
       fetchAddMission(formik.values, activityId);
-    }
-    else {
-      fetchUpdateMission(formik.values, missionData.id)
+    } else {
+      fetchUpdateMission(formik.values, missionData.id);
     }
 
-    setTimeout(()=> {
-      setMissionEditing(null)
-      setIsCreate(true)
-    }, 300)
+    setTimeout(() => {
+      setMissionEditing(null);
+      setIsCreate(true);
+    }, 300);
   };
 
   const validationSchema = Yup.object({
@@ -65,7 +67,7 @@ export default function AssistantMissionEdit({ missionData, setMissionEditing })
   useEffect(() => {
     if (missionData) {
       formik.setValues(missionData);
-      formik.setFieldValue("activity", missionData.activity.id)
+      formik.setFieldValue("activity", missionData.activity.id);
       setIsCreate(false);
     }
   }, [missionData]);
@@ -74,7 +76,10 @@ export default function AssistantMissionEdit({ missionData, setMissionEditing })
     <div>
       <div className="flex justify-between items-end">
         <Heading>Tạo nhiệm vụ</Heading>{" "}
-        <SecondaryButton className={"rounded-sm flex gap-2 items-center"} onClick={()=> setIsCreate(true)}>
+        <SecondaryButton
+          className={"rounded-sm flex gap-2 items-center"}
+          onClick={() => setIsCreate(true)}
+        >
           <IoAddSharp />
           Thêm
         </SecondaryButton>
@@ -149,9 +154,21 @@ export default function AssistantMissionEdit({ missionData, setMissionEditing })
           </FormGroup>
         </div>
         <div className="flex justify-end mt-5 gap-2 ">
-          <PrimaryButton className="rounded-sm px-8 py-1" type="submit">
-            {isCreate ? "Tạo mới" : "Cập nhật"}
-          </PrimaryButton>
+          {isCreate ? (
+            <PrimaryButton className="rounded-sm px-8 py-1" type="submit">
+              Tạo mới
+            </PrimaryButton>
+          ) : (
+            <>
+              
+              <TransparentButton className="font-semibold text-red-600 bg-red-100">
+                Xoá
+              </TransparentButton>
+              <PrimaryButton className="rounded-sm px-8 py-1" type="submit">
+                Cập nhật
+              </PrimaryButton>
+            </>
+          )}
         </div>
       </form>
     </div>

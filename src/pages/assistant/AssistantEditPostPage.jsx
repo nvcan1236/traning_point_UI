@@ -17,6 +17,7 @@ import {
 import Loading from "../../components/layout/Loading";
 import ToastMessage from "../../components/layout/ToastMessage";
 import { useParams } from "react-router-dom";
+import TransparentButton from "../../components/Buttons/TransparentButton";
 
 export default function AssistantEditPostPage() {
   const initialValues = {
@@ -182,16 +183,26 @@ export default function AssistantEditPostPage() {
           />
         </FormGroup>
 
-        <div className="flex">
-          <PrimaryButton type="submit" className="mt-4 rounded-sm w-[120px]">
-            {loading ? (
-              <Loading radius={20} />
-            ) : postId ? (
-              "Cập nhật"
-            ) : (
-              "Đăng bài"
-            )}
-          </PrimaryButton>
+        <div className="flex items-end gap-3">
+          {loading ? (
+            <Loading radius={20} />
+          ) : postId ? (
+            <>
+              <TransparentButton className="font-semibold text-red-600 bg-red-100">
+                Xoá
+              </TransparentButton>
+              <PrimaryButton
+                type="submit"
+                className="mt-4 rounded-sm w-[120px]"
+              >
+                Cập nhật
+              </PrimaryButton>
+            </>
+          ) : (
+            <PrimaryButton type="submit" className="mt-4 rounded-sm w-[120px]">
+              Đăng bài
+            </PrimaryButton>
+          )}
         </div>
       </form>
     </div>

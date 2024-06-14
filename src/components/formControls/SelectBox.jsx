@@ -38,7 +38,6 @@ export default function SelectBox({
     onChange(name, option.value);
     setSelectedValue(option.name);
     setShowOptions(false);
-
   };
 
   return (

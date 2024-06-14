@@ -117,7 +117,7 @@ export default function DetailResult() {
                   {missions &&
                     missions.length > 0 &&
                     missions.filter(
-                      (d) => d.mission.activity.pointGroupId === pg.id
+                      (d) => d.mission.activity.pointGroup === pg.id
                     ).length === 0 && (
                       <tr>
                         <td colSpan={99} className="text-center pt-8">
@@ -128,7 +128,7 @@ export default function DetailResult() {
                   {missions &&
                     missions.length > 0 &&
                     missions
-                      .filter((d) => d.mission.activity.pointGroupId === pg.id)
+                      .filter((d) => d.mission.activity.pointGroup === pg.id)
                       .map((data) => (
                         <Fragment key={data.mission.id}>
                           <tr>

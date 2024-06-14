@@ -93,6 +93,7 @@ function App() {
           <Route index element={<AssistantHome />} />
           <Route path="profile" element={<Profile />} />
           <Route path="post" element={<AssistantPost />} />
+          <Route path="post/edit/" element={<AssistantEditPostPage />} />
           <Route path="post/edit/:postId" element={<AssistantEditPostPage />} />
           <Route
             path="activities"

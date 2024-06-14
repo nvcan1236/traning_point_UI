@@ -16,8 +16,10 @@ export default function MissingModal({ show, setShow, mission }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!files) {
-      setError("Vui lòng gửi kèm minnh chứng");
+    
+    if (!files || !desc) {
+      !files && setError("Vui lòng gửi kèm minh chứng");
+      !desc && setError(`Vui lòng thêm nội dung mô tả`);
       return;
     }
 

@@ -8,10 +8,17 @@ import Heading from "../../components/layout/Heading";
 import AssistantMissionEdit from "./AsssistantMissionEdit";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { fetchAddActivity, fetchDetailActivity, fetchUpdateActivity } from "../../hooks/useFetch";
+import {
+  fetchAddActivity,
+  fetchDeleteActivity,
+  fetchDetailActivity,
+  fetchUpdateActivity,
+} from "../../hooks/useFetch";
 import { useNavigate, useParams } from "react-router-dom";
 import SelectBox from "../../components/formControls/SelectBox";
 import { useCommon } from "../../contexts/commonContext";
+import TransparentButton from "../../components/Buttons/TransparentButton";
+import WarningModal from "../../components/layout/WarningModal";
 
 export default function AssistantCreateActivity() {
   const initialValues = {
@@ -25,9 +32,8 @@ export default function AssistantCreateActivity() {
   const { activityId } = useParams();
 
   const handleSubmitActivity = async () => {
-    console.log(formik.values);
     if (activityId) {
-      await fetchUpdateActivity(formik.values, activityId)
+      await fetchUpdateActivity(formik.values, activityId);
     } else {
       const data = await fetchAddActivity(formik.values);
       navigate(`./${data?.id}`);
@@ -69,8 +75,30 @@ export default function AssistantCreateActivity() {
     activityId && getActivity(activityId);
   }, [activityId, missionEditing]);
 
+  const [showModal, setShowModal] = useState(false);
+  const handleDelete = () => {
+    setShowModal(true);
+  };
+  const hanndleCancelDelete = () => {
+    setShowModal(false);
+  };
+
+  const handleSubmitDelete = () => {
+    fetchDeleteActivity(activityId)
+    navigate('/activities')
+    setShowModal(false);
+  };
+
   return (
     <div className="p-6">
+      <WarningModal
+        message=" Tất cả các nhiệm vụ cũng bị xoá. Bạn có chắc muốn xoá hoạt động này?"
+        submitText="Xoá hoạt động"
+        cancelText="Huỷ"
+        show={showModal}
+        onCancel={hanndleCancelDelete}
+        onSubmit={handleSubmitDelete}
+      />
       <div className="flex gap-10">
         <div className="w-1/2">
           <Heading>Tạo hoạt động</Heading>
@@ -161,6 +189,13 @@ export default function AssistantCreateActivity() {
             </div>
 
             <div className="flex justify-end mt-2 gap-2">
+              {activityId && <TransparentButton
+                className="font-semibold text-red-600 bg-red-100"
+                onClick={handleDelete}
+                type="button"
+              >
+                Xoá
+              </TransparentButton>}
               <PrimaryButton className={`rounded-sm px-8 `} type="submit">
                 Lưu
               </PrimaryButton>
