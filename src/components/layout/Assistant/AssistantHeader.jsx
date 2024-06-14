@@ -3,18 +3,23 @@ import { useAuth } from "../../../contexts/authContext";
 import SelectBox from "../../formControls/SelectBox";
 import Hover from "../Hover";
 import { IoExitOutline, IoPersonOutline } from "react-icons/io5";
+import { useCommon } from "../../../contexts/commonContext";
 
 export default function AssistantHeader() {
   const { user, dispatch } = useAuth();
+  const {faculty} = useCommon();
   const navigate = useNavigate();
   const logout = () => {
     dispatch({ type: "logout" });
     navigate("/login");
   };
+
+  console.info(faculty);
+
   return (
     <div className="flex justify-end items-center py-4 gap-3 ">
       <p className="font-medium text-mainBlue">
-        Trợ lý khoa Công nghệ thông tin
+        Trợ lý {faculty.name}
       </p>
 
       <Hover

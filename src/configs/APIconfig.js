@@ -3,7 +3,8 @@ const baseURL = "http://localhost:8080/TrainingPointSystem/api";
 export const API = {
   login: `${baseURL}/login`,
   register: `${baseURL}/user/register`,
-  getAllFaculties: `${baseURL}/faculty`,
+  getAllFaculties: `${baseURL}/faculties`,
+  getFacultyByAssistant: `${baseURL}/assistants/faculty`,
   getAllPointGroup: `${baseURL}/point-groups`,
   currentUser: `${baseURL}/user/current`,
   getPost: `${baseURL}/posts`,
@@ -20,4 +21,6 @@ export const API = {
   addActivity: (pointGroupId) =>
     `${baseURL}/point-groups/${pointGroupId}/activities`,
   addMission: (activityId) => `${baseURL}/activities/${activityId}/missions`,
+  statsByRank: `${baseURL}/stats/training-points/rank`,
+  statsByFaculty: `${baseURL}/stats/training-points/faculty`,
 };

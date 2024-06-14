@@ -7,6 +7,7 @@ const CommonContext = createContext();
 function CommonProvider(props) {
   const [pointGroups, setPointGroups] = useState([]);
   const [faculties, setFaculties] = useState([]);
+  const [faculty, setFaculty] = useState(null);
 
   const getFaculties = async () => {
     const res = await fetch(API.getAllFaculties, {
@@ -34,12 +35,27 @@ function CommonProvider(props) {
     }
   };
 
+  const getFaculty = async () => {
+    const res = await fetch(API.getFacultyByAssistant, {
+      headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+      },
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      setFaculty(data);
+    }
+  }
+
+
   useEffect(() => {
     getAllPointGroup();
     getFaculties();
+    getFaculty();
   }, []);
 
-  const value = { faculties, pointGroups };
+  const value = { faculties, pointGroups, faculty };
 
   return (
     <CommonContext.Provider value={value} {...props}></CommonContext.Provider>

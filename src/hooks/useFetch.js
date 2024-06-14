@@ -1,4 +1,5 @@
 import { API } from "../configs/APIconfig";
+import { useCommon } from "../contexts/commonContext";
 
 const fetchRegister = async (missionId) => {
   const res = await fetch(API.registerMission(missionId), {
@@ -28,12 +29,25 @@ const fetchReportMissing = async (missionId, description, files) => {
   });
   if (res.ok) {
     console.log("Báo cáo thành công");
-    return res.okk;
+    return res.ok;
   }
 };
 
 const fetchFaculties = async () => {
   const res = await fetch(API.getAllFaculties, {
+    headers: {
+      Authorization: localStorage.getItem("USER_TOKEN"),
+    },
+  });
+
+  if (res.ok) {
+    const data = await res.json();
+    return data;
+  }
+};
+
+const fetchDetailFaculty = async () => {
+  const res = await fetch(API.getFacultyByAssistant, {
     headers: {
       Authorization: localStorage.getItem("USER_TOKEN"),
     },
@@ -150,6 +164,32 @@ const fetchAddMission = async (bodyData, activityId) => {
   }
 };
 
+const fetchStatsByRank = async() => {
+  const res = await fetch(API.statsByRank, {
+    headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+    },
+  });
+
+  if (res.ok) {
+    const data = res.json();
+    return data;
+  }
+};
+
+const fetchStatsByFaculty = async() => {
+  const res = await fetch(API.statsByFaculty, {
+    headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+    },
+  });
+
+  if (res.ok) {
+    const data = res.json();
+    return data;
+  }
+}
+
 export {
   fetchRegister,
   fetchReportMissing,
@@ -160,4 +200,7 @@ export {
   fetchDetailActivity,
   fetchAddActivity,
   fetchAddMission,
+  fetchDetailFaculty,
+  fetchStatsByRank,
+  fetchStatsByFaculty,
 };
