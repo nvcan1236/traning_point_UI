@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 export default function AssistantHeader() {
   const { user, dispatch } = useAuth();
-  const [options, setOptions] = useState([]);
+  const [options, setOptions] = useState();
   const { periods, faculty } = useCommon();
   const navigate = useNavigate();
   const logout = () => {
@@ -17,28 +17,25 @@ export default function AssistantHeader() {
   };
 
   const assignOptions = () => {
-    let arr = []
-    periods.map(period => {
-      arr.push(
-        {
-          "id": period.id,
-          "name": `Học kì ${period.semester} - ${period.year}`,
-          "value": period.id
-        });
+    let arr = [];
+    periods.map((period) => {
+      arr.push({
+        id: period.id,
+        name: `Học kì ${period.semester} - ${period.year}`,
+        value: period.id,
+      });
     });
     setOptions(arr);
     console.log(options);
-  }
+  };
 
   useEffect(() => {
     assignOptions();
   }, []);
 
-
   return (
     <div className="flex justify-end items-center py-4 gap-3 ">
       <p className="font-medium text-mainBlue">
-        Trợ lý {faculty.name}
         Trợ lý khoa {user.faculty.name}
       </p>
 
@@ -76,11 +73,12 @@ export default function AssistantHeader() {
         <SelectBox
           className="rounded-lg py-1 "
           options={
-            //   [
-            //   { id: 1, name: "HK1 - 2024", value: 1 },
-            //   { id: 2, name: "HK2 - 2024", value: 2 },
-            // ]
             options
+              ? options
+              : [
+                  { id: 1, name: "HK1 - 2024", value: 1 },
+                  { id: 2, name: "HK2 - 2024", value: 2 },
+                ]
           }
           name="semester"
           onChange={(name, value) => {

@@ -1,5 +1,3 @@
-import { date } from "yup";
-
 const baseURL = "http://localhost:8080/TrainingPointSystem/api";
 
 export const API = {

@@ -20,17 +20,6 @@ export default function AssistantStats() {
   });
 
   const filterOptions = [
-    { id: 1, name: "Tất cả", value: 1 },
-    { id: 2, name: "Kì này", value: 2 },
-    { id: 3, name: "Theo lớp", value: 3 },
-    { id: 4, name: "Theo khoa CNTT", value: 4 },
-  ];
-  const [filter, setFilter] = useState(filterOptions[0].value);
-  const handleSetFilter = (name, value) => {
-    setFilter(value);
-  };
-
-  const filterOptions = [
     { id: 1, name: "Theo thành tích", value: 1 },
     { id: 2, name: "Theo khoa", value: 2 },
   ];
@@ -38,7 +27,7 @@ export default function AssistantStats() {
   const [filter, setFilter] = useState(filterOptions[0].value);
   const handleSetFilter = (name, value) => {
     setFilter(value);
-  }
+  };
 
   const statsByRank = async () => {
     const dataRes = await fetchStatsByRank();
@@ -49,27 +38,23 @@ export default function AssistantStats() {
       ["Khá", dataRes[0].fair],
       ["Trung Bình", dataRes[0].average],
       ["Yếu", dataRes[0].weak],
-      ["Kém", dataRes[0].poor]
-    ]
+      ["Kém", dataRes[0].poor],
+    ];
     setData(array);
-  }
+  };
 
   const statsByFaculty = async () => {
     const dataRes = await fetchStatsByFaculty();
-    const array = [
-      ["Lớp", "Điểm rèn luyện trung bình"]
-    ] 
-    dataRes.forEach(element => {
-      array.push([element.name, element.avgTotalPoints])
+    const array = [["Lớp", "Điểm rèn luyện trung bình"]];
+    dataRes.forEach((element) => {
+      array.push([element.name, element.avgTotalPoints]);
     });
-    setData(array);  
-  }
+    setData(array);
+  };
 
   useEffect(() => {
-    if (filter === 1)
-      statsByRank();
-    else
-      statsByFaculty();
+    if (filter === 1) statsByRank();
+    else statsByFaculty();
   }, [filter]);
 
   return (
@@ -82,8 +67,8 @@ export default function AssistantStats() {
             options={filterOptions}
             name={"filter"}
             onChange={handleSetFilter}
-            className="mt-4 !w-[200px]"
-            value={filterOptions[0].name}
+            className="mt-4 w-[200px]"
+            value={filterOptions[0].value}
           />
         </div>
         <SecondaryButton className="flex items-center gap-2 rounded-sm px-4">
@@ -103,18 +88,18 @@ export default function AssistantStats() {
           </div>
         </div>
         {filter === 1 && (
-        <div className="flex-1">
-          <div>
-            <Chart
-              chartType="PieChart"
-              width="100%"
-              height="400px"
-              data={data}
-              options={options}
-            />
+          <div className="flex-1">
+            <div>
+              <Chart
+                chartType="PieChart"
+                width="100%"
+                height="400px"
+                data={data}
+                options={options}
+              />
+            </div>
           </div>
-        </div>)
-        }
+        )}
       </div>
     </div>
   );
