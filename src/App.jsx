@@ -39,7 +39,7 @@ function App() {
     try {
       const response = await fetch(API.currentUser, {
         headers: {
-          Authorization: token,
+          "Authorization": token,
         },
       });
       if (!response.ok) {

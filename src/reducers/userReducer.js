@@ -16,6 +16,7 @@ export default function userReducer(state, action) {
       return state
     case "logout":
       localStorage.removeItem("USER_TOKEN")
+      localStorage.removeItem("faculty")
       return null;
     case "current":
       return action.payload

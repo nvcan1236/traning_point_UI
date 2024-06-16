@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/authContext";
-import FormGroup from "../components/formControls/FormGroup";
 import Input from "../components/formControls/Input";
 import PrimaryButton from "../components/Buttons/PrimaryButton";
 import CheckBox from "../components/formControls/CheckBox";
@@ -9,11 +8,13 @@ import { API } from "../configs/APIconfig";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import Loading from "../components/layout/Loading";
+import FormGroup from "../components/formControls/FormGroup";
 
 export default function LoginPage() {
   const { dispatch } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isAssistant, setIsAssistant] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -27,7 +28,7 @@ export default function LoginPage() {
     try {
       const response = await fetch(`${API.login}`, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/json"
         },
         method: "POST",
         body: JSON.stringify(formik.values),
@@ -38,6 +39,7 @@ export default function LoginPage() {
       }
 
       const data = await response.json();
+      console.info(data.token);
       dispatch({ type: "login", payload: data.token });
       setLoading(false);
       navigate("/");
@@ -146,7 +148,10 @@ export default function LoginPage() {
         </div>
         <div
           className="text-center text-mainBlue font-semibold cursor-pointer"
-          onClick={() => setIsAssistant(!isAssistant)}
+          onClick={() => {
+            setIsAssistant(!isAssistant)
+            setIsAdmin(!isAdmin)
+          }}
         >
           Đăng nhập với vai trò {isAssistant ? "Sinh viên" : "Trợ lý"}
         </div>

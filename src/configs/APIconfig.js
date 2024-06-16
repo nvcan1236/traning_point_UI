@@ -1,3 +1,5 @@
+import { date } from "yup";
+
 const baseURL = "http://localhost:8080/TrainingPointSystem/api";
 
 export const API = {
@@ -9,6 +11,7 @@ export const API = {
 
   // FACULTY
   getAllFaculties: `${baseURL}/faculties`,
+  getFacultyByAssistant: `${baseURL}/assistants/faculties`,
 
   // POINT GROUP
   getAllPointGroup: `${baseURL}/point-groups`,
@@ -44,4 +47,7 @@ export const API = {
   updateMissingReport: (missingReportId) => `${baseURL}/missing-report/${missingReportId}`,
   getResultById:  (userId) => `${baseURL}students/result-training-point?id=${userId}`,
   getMissingReportById:  (userId, periodId) => `${baseURL}missing-report/student?studentId=${userId}&periodId=${periodId}`,
+  statsByRank: `${baseURL}/stats/training-points/rank`,
+  statsByFaculty: `${baseURL}/stats/training-points/faculty`,
+  getAllPeriod: (year) => `${baseURL}/period?year=${year}`
 };

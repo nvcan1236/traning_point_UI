@@ -28,12 +28,25 @@ const fetchReportMissing = async (missionId, description, files) => {
   });
   if (res.ok) {
     console.log("Báo cáo thành công");
-    return res.okk;
+    return res.ok;
   }
 };
 
 const fetchFaculties = async () => {
   const res = await fetch(API.getAllFaculties, {
+    headers: {
+      Authorization: localStorage.getItem("USER_TOKEN"),
+    },
+  });
+
+  if (res.ok) {
+    const data = await res.json();
+    return data;
+  }
+};
+
+const fetchDetailFaculty = async () => {
+  const res = await fetch(API.getFacultyByAssistant, {
     headers: {
       Authorization: localStorage.getItem("USER_TOKEN"),
     },
@@ -441,6 +454,34 @@ const fetchGetResultByUserId = async (userId) => {
   }
 };
 
+const fetchStatsByRank = async() => {
+  const res = await fetch(API.statsByRank, {
+    headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+    },
+  });
+
+  if (res.ok) {
+    const data = res.json();
+    return data;
+  }
+};
+
+const fetchStatsByFaculty = async() => {
+  const res = await fetch(API.statsByFaculty, {
+    headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+    },
+  });
+
+  if (res.ok) {
+    const data = res.json();
+    return data;
+  }
+}
+
+
+
 export {
   fetchRegister,
   fetchReportMissing,
@@ -466,4 +507,7 @@ export {
   fetchDeleteMission,
   fetchDeletePost,
   fetchGetStudentByStudentId,
+  fetchDetailFaculty,
+  fetchStatsByRank,
+  fetchStatsByFaculty,
 };
