@@ -11,13 +11,15 @@ import * as Yup from "yup";
 import {
   fetchActivities,
   fetchAddPost,
+  fetchDeletePost,
   fetchDetailPost,
   fetchUpdatePost,
 } from "../../hooks/useFetch";
 import Loading from "../../components/layout/Loading";
 import ToastMessage from "../../components/layout/ToastMessage";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import TransparentButton from "../../components/Buttons/TransparentButton";
+import WarningModal from "../../components/layout/WarningModal";
 
 export default function AssistantEditPostPage() {
   const initialValues = {
@@ -88,6 +90,21 @@ export default function AssistantEditPostPage() {
     validationSchema,
   });
 
+  const [showModal, setShowModal] = useState(false);
+  const handleDelete = () => {
+    setShowModal(true);
+  };
+  const hanndleCancelDelete = () => {
+    setShowModal(false);
+  };
+  const navigate = useNavigate()
+  const handleSubmitDelete = () => {
+    fetchDeletePost(postId);
+    setShowModal(false);
+    navigate(-1)
+
+  };
+
   return (
     <div className="p-6">
       <ToastMessage
@@ -95,6 +112,14 @@ export default function AssistantEditPostPage() {
         type="success"
         show={showToast}
         duration={5000}
+      />
+      <WarningModal
+        message="Bạn có chắc muốn xoá bài đăng này?"
+        submitText="Xoá bài đăng"
+        cancelText="Huỷ"
+        show={showModal}
+        onCancel={hanndleCancelDelete}
+        onSubmit={handleSubmitDelete}
       />
       <Heading className="text-xl">Tạo bài đăng</Heading>
       <form
@@ -188,7 +213,11 @@ export default function AssistantEditPostPage() {
             <Loading radius={20} />
           ) : postId ? (
             <>
-              <TransparentButton className="font-semibold text-red-600 bg-red-100">
+              <TransparentButton
+                className="font-semibold text-red-600 bg-red-100"
+                type={"button"}
+                onClick={handleDelete}
+              >
                 Xoá
               </TransparentButton>
               <PrimaryButton

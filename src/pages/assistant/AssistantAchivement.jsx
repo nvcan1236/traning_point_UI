@@ -1,18 +1,43 @@
 /* eslint-disable no-unused-vars */
-import { useState } from "react";
+import { useRef, useState } from "react";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import Input from "../../components/formControls/Input";
 import Heading from "../../components/layout/Heading";
 import { useNavigate } from "react-router-dom";
 import { IoSaveSharp } from "react-icons/io5";
 import BackButton from "../../components/Buttons/BackButton";
+import { useReadOnly } from "slate-react";
+import { fetchGetStudentByStudentId } from "../../hooks/useFetch";
+import ToastMessage from "../../components/layout/ToastMessage";
 
 export default function AssistantAchivement() {
-  const [student, setStudent] = useState({});
+  const [student, setStudent] = useState();
   const [tab, setTab] = useState("activity");
+
+  const studentId = useRef()
+  const handleGetData = async () => {
+    const studentData = await fetchGetStudentByStudentId(studentId.current.value)
+    if(studentData) {
+      setStudent(studentData)
+
+    }
+    else {
+      setShowToast(Math.random())
+      setToastMessage("Không tìm thấy sinh viên!!")
+    }
+  }
+
+  const [showToast, setShowToast] = useState(0);
+  const [toastMessage, setToastMessage] = useState("");
 
   return (
     <div className="p-6">
+      <ToastMessage
+        message={toastMessage}
+        type="error"
+        show={showToast}
+        duration={5000}
+      />
       <div className="flex flex-col min-h-[600px]">
         <div>
           <div className="flex items-end gap-6">
@@ -24,8 +49,8 @@ export default function AssistantAchivement() {
           </p>
           <div className="flex mt-4 justify-between">
             <div className="flex">
-              <Input type="text" placeholder="MSSV" />{" "}
-              <SecondaryButton className="rounded-sm">Tìm kiếm</SecondaryButton>
+              <Input type="text" placeholder="MSSV" ref={studentId} />
+              <SecondaryButton className="rounded-sm" onClick={handleGetData}>Tìm kiếm</SecondaryButton>
             </div>
             <SecondaryButton className="flex items-center gap-2 rounded-sm px-4">
               <IoSaveSharp /> Lưu báo cáo
@@ -45,30 +70,30 @@ export default function AssistantAchivement() {
               </Heading>
               <div className="mt-6 px-6">
                 <img
-                  src="https://scontent.fsgn2-11.fna.fbcdn.net/v/t39.30808-1/244997846_1228668870941952_6805849585898205605_n.jpg?stp=dst-jpg_p200x200&_nc_cat=105&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHhry3pXuywMpgr4NMyb_RmAjzMkkmawnwCPMySSZrCfJ1m3VkgcAO5w1dsWqyH6nft1GQ_YY-gkrtPRFpTNz1v&_nc_ohc=F-NcWMdIuKQQ7kNvgGEBc03&_nc_ht=scontent.fsgn2-11.fna&oh=00_AYDq21xmr7N9myLCaZK0uwvy59oXuiFkfIG_i7k8wN1UJg&oe=664E5E15"
+                  src={student.user.avatar}
                   alt=""
                   className="w-[120px] my-4"
                 />
                 <div className="flex flex-col gap-1">
                   <p>
-                    <span className="font-medium text-mainBlue">Họ tên</span>:
-                    Nguyễn Văn Cảnh
+                    <span className="font-medium text-mainBlue">Họ tên: </span>
+                    {`${student.user.lastName} ${student.user.firstName}`}
                   </p>
                   <p>
-                    <span className="font-medium text-mainBlue">MSSV</span>:
-                    2151053005
+                    <span className="font-medium text-mainBlue">MSSV: </span>
+                    {student.studentId}
                   </p>
                   <p>
                     <span className="font-medium text-mainBlue">Khoa</span>:
-                    Công nghệ thông tin
+                    {student.user.faculty.name}
                   </p>
                   <p>
                     <span className="font-medium text-mainBlue">Lớp</span>:
-                    DH21IT01
+                    {student.className}
                   </p>
                   <p>
                     <span className="font-medium text-mainBlue">Email</span>:
-                    2151052005canh@gmail.com
+                    {student.user.email}
                   </p>
 
                   <div className="pt-3 border-t mt-3">

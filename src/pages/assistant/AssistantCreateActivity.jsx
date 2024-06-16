@@ -84,7 +84,7 @@ export default function AssistantCreateActivity() {
   };
 
   const handleSubmitDelete = () => {
-    fetchDeleteActivity(activityId)
+    // fetchDeleteActivity(activityId)
     navigate('/activities')
     setShowModal(false);
   };

@@ -386,6 +386,61 @@ const fetchUpdateStatusMissingReport = async (missingReportId, bodyData) => {
   }
 };
 
+const fetchGetMissingReportByUserId= async (userId) => {
+  try {
+    const res = await fetch(API.getMissingReportById(userId), {
+      headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+      },
+      method: "GET",
+    });
+    if (!res.ok) {
+      throw new Error("Something went wrong!!");
+    }
+    const data = await res.json();
+    return data;
+  } catch (ex) {
+    console.log(ex);
+  }
+};
+
+const fetchGetStudentByStudentId = async (studentId) => {
+  try {
+    const res = await fetch(API.getStudentByStudentId(studentId), {
+      headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+      },
+      method: "GET",
+    });
+    if (!res.ok) {
+      throw new Error("Something went wrong!!");
+    }
+    const data = await res.json();
+    return data;
+  } catch (ex) {
+    console.log(ex);
+    return false;
+  }
+};
+
+const fetchGetResultByUserId = async (userId) => {
+  try {
+    const res = await fetch(API.getResultById(userId), {
+      headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+      },
+      method: "GET",
+    });
+    if (!res.ok) {
+      throw new Error("Something went wrong!!");
+    }
+    const data = await res.json();
+    return data;
+  } catch (ex) {
+    console.log(ex);
+  }
+};
+
 export {
   fetchRegister,
   fetchReportMissing,
@@ -403,9 +458,12 @@ export {
   fetchDetailPost,
   fetchUpdatePost,
   fetchGetMissingReportByFaculty,
+  fetchGetMissingReportByUserId,
+  fetchGetResultByUserId,
   fetchGetDetailMissingReport,
   fetchUpdateStatusMissingReport,
   fetchDeleteActivity, 
   fetchDeleteMission,
-  fetchDeletePost
+  fetchDeletePost,
+  fetchGetStudentByStudentId,
 };

@@ -5,9 +5,10 @@ export const API = {
   login: `${baseURL}/login`,
   register: `${baseURL}/user/register`,
   currentUser: `${baseURL}/user/current`,
+  getStudentByStudentId: (studentId)=>`${baseURL}/students/${studentId}`,
 
   // FACULTY
-  getAllFaculties: `${baseURL}/faculty`,
+  getAllFaculties: `${baseURL}/faculties`,
 
   // POINT GROUP
   getAllPointGroup: `${baseURL}/point-groups`,
@@ -36,9 +37,11 @@ export const API = {
   reportMissing: (missionId) => `${baseURL}/missions/${missionId}/missing`,
   missionsByActivities: (activityId) =>
     `${baseURL}/activities/${activityId}/missions`,
-  userMission: `${baseURL}/missions`,
+  userMission: `${baseURL}/missions/user-mission`,
   getMissingReport: (facultyId) =>
-    `${baseURL}/missing-report?facultyId=${facultyId}`,
+    `${baseURL}/missing-report/faculty?facultyId=${facultyId}`,
   getDetailMissingReport: (missingReportId) => `${baseURL}/missing-report/${missingReportId}`,
-  updateMissingReport: (missingReportId) => `${baseURL}/missing-report/${missingReportId}`
+  updateMissingReport: (missingReportId) => `${baseURL}/missing-report/${missingReportId}`,
+  getResultById:  (userId) => `${baseURL}students/result-training-point?id=${userId}`,
+  getMissingReportById:  (userId, periodId) => `${baseURL}missing-report/student?studentId=${userId}&periodId=${periodId}`,
 };

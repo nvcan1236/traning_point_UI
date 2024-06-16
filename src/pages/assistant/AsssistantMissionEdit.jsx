@@ -7,11 +7,12 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchAddMission, fetchUpdateMission } from "../../hooks/useFetch";
+import { fetchAddMission, fetchDeleteMission, fetchUpdateMission } from "../../hooks/useFetch";
 import Heading from "../../components/layout/Heading";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import { IoAddSharp } from "react-icons/io5";
 import TransparentButton from "../../components/Buttons/TransparentButton";
+import WarningModal from "../../components/layout/WarningModal";
 
 export default function AssistantMissionEdit({
   missionData,
@@ -67,13 +68,34 @@ export default function AssistantMissionEdit({
   useEffect(() => {
     if (missionData) {
       formik.setValues(missionData);
-      formik.setFieldValue("activity", missionData.activity.id);
+      formik.setFieldValue("activity", activityId);
       setIsCreate(false);
     }
   }, [missionData]);
 
+  const [showModal, setShowModal] = useState(false);
+  const handleDelete = () => {
+    setShowModal(true);
+  };
+  const hanndleCancelDelete = () => {
+    setShowModal(false);
+  };
+
+  const handleSubmitDelete = () => {
+    fetchDeleteMission(missionData.id);
+    setShowModal(false);
+  };
+
   return (
     <div>
+      <WarningModal
+        message="Bạn có chắc muốn xoá nhiệm vụ này?"
+        submitText="Xoá nhiệm vụ"
+        cancelText="Huỷ"
+        show={showModal}
+        onCancel={hanndleCancelDelete}
+        onSubmit={handleSubmitDelete}
+      />
       <div className="flex justify-between items-end">
         <Heading>Tạo nhiệm vụ</Heading>{" "}
         <SecondaryButton
@@ -160,8 +182,7 @@ export default function AssistantMissionEdit({
             </PrimaryButton>
           ) : (
             <>
-              
-              <TransparentButton className="font-semibold text-red-600 bg-red-100">
+              <TransparentButton className="font-semibold text-red-600 bg-red-100" type="button" onClick={handleDelete}>
                 Xoá
               </TransparentButton>
               <PrimaryButton className="rounded-sm px-8 py-1" type="submit">

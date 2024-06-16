@@ -49,7 +49,7 @@ export default function ToastMessage({
   
   return (
     <div
-      className={`fixed transition-all shadow-md duration-1000 flex gap-4 items-center w-[320px] rounded-sm border px-4 py-3 ${
+      className={`fixed transition-all shadow-md duration-1000 flex gap-4 items-center w-[320px] rounded-sm border px-4 py-3 z-20 ${
         typeData[toastType]?.typeClassName
       } ${display ? "right-8 opacity-100" : "-right-full ml-[40px] opacity-0"}`}
     >
