@@ -9,7 +9,7 @@ import { useEffect, useState } from "react";
 export default function AssistantHeader() {
   const { user, dispatch } = useAuth();
   const [options, setOptions] = useState();
-  const { periods, faculty } = useCommon();
+  const { periods } = useCommon();
   const navigate = useNavigate();
   const logout = () => {
     dispatch({ type: "logout" });
@@ -26,12 +26,15 @@ export default function AssistantHeader() {
       });
     });
     setOptions(arr);
-    console.log(options);
+    setSelectedOption(arr[0]);
+    console.log();
   };
 
   useEffect(() => {
     assignOptions();
   }, []);
+
+  const [selectedOption, setSelectedOption] = useState();
 
   return (
     <div className="flex justify-end items-center py-4 gap-3 ">
@@ -73,17 +76,15 @@ export default function AssistantHeader() {
         <SelectBox
           className="rounded-lg py-1 "
           options={
-            options
+            options && options.lenth > 0
               ? options
-              : [
-                  { id: 1, name: "HK1 - 2024", value: 1 },
-                  { id: 2, name: "HK2 - 2024", value: 2 },
-                ]
+              : [{ id: 1, name: "Học kỳ", value: 1 }]
           }
           name="semester"
           onChange={(name, value) => {
-            console.log(`${name}: ${value}`);
+            setSelectedOption(value);
           }}
+          value={selectedOption?.name}
         />
       </div>
     </div>
