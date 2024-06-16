@@ -16,8 +16,16 @@ export default function AssistantStats() {
       subtitle: "Sales, Expenses, and Profit: 2014-2017",
     },
   });
-  const [selectedOption, setSelectedOption] = useState(1);
 
+  const filterOptions = [
+    { id: 1, name: "Theo thành tích", value: 1 },
+    { id: 2, name: "Theo khoa", value: 2 },
+  ];
+
+  const [filter, setFilter] = useState(filterOptions[0].value);
+  const handleSetFilter = (name, value) => {
+    setFilter(value);
+  }
 
   const statsByRank = async () => {
     const dataRes = await fetchStatsByRank();
@@ -45,17 +53,11 @@ export default function AssistantStats() {
   }
 
   useEffect(() => {
-    if (selectedOption === 1)
+    if (filter === 1)
       statsByRank();
     else
       statsByFaculty();
-  }, [selectedOption]);
-
-  const handleSelectChange = (e) => {
-    // const value = parseInt(e.target.value, 10);
-    console.log(e.target)
-    // setSelectedOption(value);
-  }
+  }, [filter]);
 
   return (
     <div className="p-6">
@@ -63,13 +65,11 @@ export default function AssistantStats() {
         <BackButton />
         <Heading>Thống kê kết quả học kỳ</Heading>
         <SelectBox
-          options={[
-            { id: 1, name: "Theo thành tích", value: 1 },
-            { id: 2, name: "Theo khoa", value: 2 },
-          ]}
+          options={filterOptions}
           name={"filter"}
-          onChange={handleSelectChange}
+          onChange={handleSetFilter}
           className='mt-4 w-[200px]'
+          value={filterOptions[0].value}
         />
       </div>
       <div className="flex gap-8 mt-20">
@@ -84,7 +84,7 @@ export default function AssistantStats() {
             />
           </div>
         </div>
-        {selectedOption === 1 && (
+        {filter === 1 && (
         <div className="flex-1">
           <div>
             <Chart

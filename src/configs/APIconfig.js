@@ -1,3 +1,5 @@
+import { date } from "yup";
+
 const baseURL = "http://localhost:8080/TrainingPointSystem/api";
 
 export const API = {
@@ -23,4 +25,5 @@ export const API = {
   addMission: (activityId) => `${baseURL}/activities/${activityId}/missions`,
   statsByRank: `${baseURL}/stats/training-points/rank`,
   statsByFaculty: `${baseURL}/stats/training-points/faculty`,
+  getAllPeriod: (year) => `${baseURL}/period?year=${year}`
 };

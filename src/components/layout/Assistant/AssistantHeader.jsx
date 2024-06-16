@@ -4,17 +4,36 @@ import SelectBox from "../../formControls/SelectBox";
 import Hover from "../Hover";
 import { IoExitOutline, IoPersonOutline } from "react-icons/io5";
 import { useCommon } from "../../../contexts/commonContext";
+import { useEffect, useState } from "react";
 
 export default function AssistantHeader() {
   const { user, dispatch } = useAuth();
-  const {faculty} = useCommon();
+  const [options, setOptions] = useState([]);
+  const { periods, faculty } = useCommon();
   const navigate = useNavigate();
   const logout = () => {
     dispatch({ type: "logout" });
     navigate("/login");
   };
 
-  console.info(faculty);
+  const assignOptions = () => {
+    let arr = []
+    periods.map(period => {
+      arr.push(
+        {
+          "id": period.id,
+          "name": `Học kì ${period.semester} - ${period.year}`,
+          "value": period.id
+        });
+    });
+    setOptions(arr);
+    console.log(options);
+  }
+
+  useEffect(() => {
+    assignOptions();
+  }, []);
+
 
   return (
     <div className="flex justify-end items-center py-4 gap-3 ">
@@ -52,13 +71,16 @@ export default function AssistantHeader() {
           </span>
         </NavLink>
       </Hover>
-      <div className="w-[140px] text-sm">
+      <div className="w-[170px] text-sm">
         <SelectBox
           className="rounded-lg py-1 "
-          options={[
-            { id: 1, name: "HK1 - 2024", value: 1 },
-            { id: 2, name: "HK2 - 2024", value: 2 },
-          ]}
+          options={
+            //   [
+            //   { id: 1, name: "HK1 - 2024", value: 1 },
+            //   { id: 2, name: "HK2 - 2024", value: 2 },
+            // ]
+            options
+          }
           name="semester"
           onChange={(name, value) => {
             console.log(`${name}: ${value}`);
