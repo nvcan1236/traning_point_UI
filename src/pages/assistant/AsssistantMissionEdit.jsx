@@ -38,6 +38,7 @@ export default function AssistantMissionEdit({
     if (isCreate) {
       fetchAddMission(formik.values, activityId);
     } else {
+      console.log(formik.values);
       fetchUpdateMission(formik.values, missionData.id);
     }
 

@@ -1,4 +1,5 @@
-const baseURL = "http://localhost:8080/TrainingPointSystem/api";
+const rootURL = "http://localhost:8080/TrainingPointSystem";
+const baseURL = `${rootURL}/api`;
 
 export const API = {
   // USER
@@ -43,9 +44,12 @@ export const API = {
     `${baseURL}/missing-report/faculty?facultyId=${facultyId}`,
   getDetailMissingReport: (missingReportId) => `${baseURL}/missing-report/${missingReportId}`,
   updateMissingReport: (missingReportId) => `${baseURL}/missing-report/${missingReportId}`,
-  getResultById:  (userId) => `${baseURL}students/result-training-point?id=${userId}`,
-  getMissingReportById:  (userId, periodId) => `${baseURL}missing-report/student?studentId=${userId}&periodId=${periodId}`,
+  getResultById:  (userId) => `${baseURL}/students/result-training-point?id=${userId}`,
+  getMissingReportById:  (userId, periodId) => `${baseURL}/missing-report/student?studentId=${userId}&periodId=${periodId}`,
   statsByRank: `${baseURL}/stats/training-points/rank`,
   statsByFaculty: `${baseURL}/stats/training-points/faculty`,
-  getAllPeriod: (year) => `${baseURL}/period?year=${year}`
+  getAllPeriod: (year) => `${baseURL}/period?year=${year}`,
+
+  // PDF
+  generatePdf: `${rootURL}/generatePdf`
 };

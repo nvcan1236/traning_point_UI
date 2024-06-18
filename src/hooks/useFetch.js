@@ -399,9 +399,9 @@ const fetchUpdateStatusMissingReport = async (missingReportId, bodyData) => {
   }
 };
 
-const fetchGetMissingReportByUserId= async (userId) => {
+const fetchGetMissingReportByUserId= async (userId, periodId) => {
   try {
-    const res = await fetch(API.getMissingReportById(userId), {
+    const res = await fetch(API.getMissingReportById(userId, periodId), {
       headers: {
         Authorization: localStorage.getItem("USER_TOKEN"),
       },
@@ -480,6 +480,22 @@ const fetchStatsByFaculty = async() => {
   }
 }
 
+const fetchGeneratePdf = async (bodyData) => {
+  const res = await fetch(API.generatePdf, {
+    headers: {
+        "Content-Type": "application/json"
+    },
+    body: JSON.stringify(bodyData),
+    method: "POST",
+    responseType: 'blob'
+  });
+
+  if (res.ok) {
+    const data = await res.blob(); // Nhận dữ liệu dưới dạng blob
+    return data;
+  }
+}
+
 
 
 export {
@@ -510,4 +526,5 @@ export {
   fetchDetailFaculty,
   fetchStatsByRank,
   fetchStatsByFaculty,
+  fetchGeneratePdf
 };
