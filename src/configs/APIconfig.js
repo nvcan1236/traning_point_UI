@@ -45,7 +45,15 @@ export const API = {
   updateMissingReport: (missingReportId) => `${baseURL}/missing-report/${missingReportId}`,
   getResultById:  (userId) => `${baseURL}students/result-training-point?id=${userId}`,
   getMissingReportById:  (userId, periodId) => `${baseURL}missing-report/student?studentId=${userId}&periodId=${periodId}`,
+
+  // STATS
   statsByRank: `${baseURL}/stats/training-points/rank`,
   statsByFaculty: `${baseURL}/stats/training-points/faculty`,
-  getAllPeriod: (year) => `${baseURL}/period?year=${year}`
+
+  //PERIOD
+  getAllPeriod: (year) => `${baseURL}/period?year=${year}`,
+
+  //MESSAGES
+  sendMessage: `${baseURL}/chat/send`,
+  getUsers: `${baseURL}/chat/get-users`,
 };

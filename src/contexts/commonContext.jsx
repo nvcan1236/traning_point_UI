@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { createContext, useContext, useEffect, useState } from "react";
 import { API } from "../configs/APIconfig";
+import { useAuth } from "./authContext";
 
 const CommonContext = createContext();
 
@@ -8,7 +9,6 @@ function CommonProvider(props) {
   const [pointGroups, setPointGroups] = useState([]);
   const [faculties, setFaculties] = useState([]);
   const [periods, setPeriods] = useState([]);
-  const [faculty, setFaculty] = useState(null);
 
   const getFaculties = async () => {
     const res = await fetch(API.getAllFaculties, {
@@ -51,28 +51,13 @@ function CommonProvider(props) {
     }
   }
 
-  const getFaculty = async () => {
-    const res = await fetch(API.getFacultyByAssistant, {
-      headers: {
-        Authorization: localStorage.getItem("USER_TOKEN")
-      },
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      // console.log(data)
-      setFaculty(data);
-    }
-  }
-
   useEffect(() => {
     getAllPointGroup();
     getFaculties();
     getPeriodByYear();
-    getFaculty();
   }, []);
 
-  const value = { faculties, pointGroups, periods, faculty};
+  const value = { faculties, pointGroups, periods};
 
   return (
     <CommonContext.Provider value={value} {...props}></CommonContext.Provider>

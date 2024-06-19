@@ -3,6 +3,7 @@ import {
   IoArrowForwardSharp,
   IoBarChartSharp,
   IoBarbellSharp,
+  IoChatboxSharp,
   IoHomeSharp,
   IoNewspaperSharp,
   IoReaderSharp,
@@ -74,6 +75,12 @@ export default function AssistantNavbar() {
           text="Thống kê"
           icon={<IoBarChartSharp />}
           expand={expand}
+        />
+        <NavbarItem
+        to="/chat"
+        text="Nhắn tin"
+        icon={<IoChatboxSharp />}
+        expand={expand}
         />
         <span
           className="absolute bottom-6 right-6 border border-mainBlue rounded-sm p-2"

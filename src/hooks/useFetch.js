@@ -399,7 +399,7 @@ const fetchUpdateStatusMissingReport = async (missingReportId, bodyData) => {
   }
 };
 
-const fetchGetMissingReportByUserId= async (userId) => {
+const fetchGetMissingReportByUserId = async (userId) => {
   try {
     const res = await fetch(API.getMissingReportById(userId), {
       headers: {
@@ -454,10 +454,10 @@ const fetchGetResultByUserId = async (userId) => {
   }
 };
 
-const fetchStatsByRank = async() => {
+const fetchStatsByRank = async () => {
   const res = await fetch(API.statsByRank, {
     headers: {
-        Authorization: localStorage.getItem("USER_TOKEN"),
+      Authorization: localStorage.getItem("USER_TOKEN"),
     },
   });
 
@@ -467,10 +467,10 @@ const fetchStatsByRank = async() => {
   }
 };
 
-const fetchStatsByFaculty = async() => {
+const fetchStatsByFaculty = async () => {
   const res = await fetch(API.statsByFaculty, {
     headers: {
-        Authorization: localStorage.getItem("USER_TOKEN"),
+      Authorization: localStorage.getItem("USER_TOKEN"),
     },
   });
 
@@ -480,7 +480,41 @@ const fetchStatsByFaculty = async() => {
   }
 }
 
+const sendMessage = async (bodyData) => {
+  try {
+    const res = await fetch(API.sendMessage, {
+      headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+        "Content-Type": "application/json"
+      },
+      method: "POST",
+      body: JSON.stringify(bodyData)
+    });
+    if (!res.ok) {
+      throw new Error("Something went wrong!!");
+    }
+  } catch (ex) {
+    console.log(ex);
+  }
+}
 
+const getUsers = async() => {
+  try {
+    const res = await fetch(API.getUsers, {
+      headers: {
+        Authorization: localStorage.getItem("USER_TOKEN"),
+      },
+      method: "GET",
+    });
+    if (!res.ok) {
+      throw new Error("Something went wrong!!");
+    }
+    const data = await res.json();
+    return data;
+  } catch (ex) {
+    console.log(ex);
+  }
+}
 
 export {
   fetchRegister,
@@ -503,11 +537,13 @@ export {
   fetchGetResultByUserId,
   fetchGetDetailMissingReport,
   fetchUpdateStatusMissingReport,
-  fetchDeleteActivity, 
+  fetchDeleteActivity,
   fetchDeleteMission,
   fetchDeletePost,
   fetchGetStudentByStudentId,
   fetchDetailFaculty,
   fetchStatsByRank,
   fetchStatsByFaculty,
+  sendMessage,
+  getUsers
 };

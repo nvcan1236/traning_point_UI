@@ -39,7 +39,7 @@ export default function AssistantHeader() {
   return (
     <div className="flex justify-end items-center py-4 gap-3 ">
       <p className="font-medium text-mainBlue">
-        Trợ lý khoa {user.faculty.name}
+       {user && `Trợ lý khoa ${user.faculty.name}` }
       </p>
 
       <Hover

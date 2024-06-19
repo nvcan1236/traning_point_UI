@@ -25,6 +25,7 @@ import AssistantStats from "./pages/assistant/AssistantStats";
 import AssistantEditPostPage from "./pages/assistant/AssistantEditPostPage";
 import AssistantDetailMissing from "./pages/assistant/AssistantDetailMissing";
 import MissingReport from "./pages/MissingReport";
+import AssistantChat from "./pages/assistant/AssistantChat";
 
 function App() {
   const { user, dispatch } = useAuth();
@@ -121,6 +122,7 @@ function App() {
           <Route path="missing" element={<AssistantMissing />} />
 
           <Route path="stats" element={<AssistantStats />} />
+          <Route path="chat" element={<AssistantChat />}/>
         </Route>
       )}
 
