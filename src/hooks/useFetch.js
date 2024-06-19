@@ -399,9 +399,9 @@ const fetchUpdateStatusMissingReport = async (missingReportId, bodyData) => {
   }
 };
 
-const fetchGetMissingReportByUserId = async (userId) => {
+const fetchGetMissingReportByUserId= async (userId, periodId) => {
   try {
-    const res = await fetch(API.getMissingReportById(userId), {
+    const res = await fetch(API.getMissingReportById(userId, periodId), {
       headers: {
         Authorization: localStorage.getItem("USER_TOKEN"),
       },
@@ -480,23 +480,22 @@ const fetchStatsByFaculty = async () => {
   }
 }
 
-const sendMessage = async (bodyData) => {
-  try {
-    const res = await fetch(API.sendMessage, {
-      headers: {
-        Authorization: localStorage.getItem("USER_TOKEN"),
+const fetchGeneratePdf = async (bodyData) => {
+  const res = await fetch(API.generatePdf, {
+    headers: {
         "Content-Type": "application/json"
-      },
-      method: "POST",
-      body: JSON.stringify(bodyData)
-    });
-    if (!res.ok) {
-      throw new Error("Something went wrong!!");
-    }
-  } catch (ex) {
-    console.log(ex);
+    },
+    body: JSON.stringify(bodyData),
+    method: "POST",
+    responseType: 'blob'
+  });
+
+  if (res.ok) {
+    const data = await res.blob(); // Nhận dữ liệu dưới dạng blob
+    return data;
   }
 }
+
 
 const getUsers = async() => {
   try {
@@ -544,6 +543,5 @@ export {
   fetchDetailFaculty,
   fetchStatsByRank,
   fetchStatsByFaculty,
-  sendMessage,
-  getUsers
+  fetchGeneratePdf
 };

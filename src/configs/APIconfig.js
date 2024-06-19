@@ -1,4 +1,5 @@
-const baseURL = "http://localhost:8080/TrainingPointSystem/api";
+const rootURL = "http://localhost:8080/TrainingPointSystem";
+const baseURL = `${rootURL}/api`;
 
 export const API = {
   // USER
@@ -56,4 +57,7 @@ export const API = {
   //MESSAGES
   sendMessage: `${baseURL}/chat/send`,
   getUsers: `${baseURL}/chat/get-users`,
+
+  // PDF
+  generatePdf: `${rootURL}/generatePdf`
 };

@@ -62,16 +62,16 @@ export default function AssistantStats() {
       <div className="flex gap-10 items-end">
         <BackButton />
         <Heading>Thống kê kết quả học kỳ</Heading>
-        <div className="flex-1">
+        <div >
           <SelectBox
             options={filterOptions}
             name={"filter"}
             onChange={handleSetFilter}
-            className="mt-4 w-[200px]"
-            value={filterOptions[0].value}
+            className="mt-4 !w-[200px]"
+            value={filterOptions[0].name}
           />
         </div>
-        <SecondaryButton className="flex items-center gap-2 rounded-sm px-4">
+        <SecondaryButton className="flex items-center gap-2 rounded-sm px-4 ml-auto">
           <IoSaveSharp /> Lưu báo cáo
         </SecondaryButton>
       </div>

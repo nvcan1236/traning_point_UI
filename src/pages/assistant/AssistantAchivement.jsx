@@ -1,5 +1,6 @@
+/* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import Input from "../../components/formControls/Input";
 import Heading from "../../components/layout/Heading";
@@ -7,28 +8,88 @@ import { useNavigate } from "react-router-dom";
 import { IoSaveSharp } from "react-icons/io5";
 import BackButton from "../../components/Buttons/BackButton";
 import { useReadOnly } from "slate-react";
-import { fetchGetStudentByStudentId } from "../../hooks/useFetch";
+import {
+  fetchGeneratePdf,
+  fetchGetMissingReportByUserId,
+  fetchGetResultByUserId,
+  fetchGetStudentByStudentId,
+} from "../../hooks/useFetch";
 import ToastMessage from "../../components/layout/ToastMessage";
+import { tranformPdfMisssingtData, tranformPdfResultData } from "../../utils/tranformPdfData";
 
 export default function AssistantAchivement() {
   const [student, setStudent] = useState();
   const [tab, setTab] = useState("activity");
+  const [result, setResult] = useState();
+  const [missings, setMissings] = useState();
+  const studentId = useRef();
 
-  const studentId = useRef()
   const handleGetData = async () => {
-    const studentData = await fetchGetStudentByStudentId(studentId.current.value)
-    if(studentData) {
-      setStudent(studentData)
+    const studentData = await fetchGetStudentByStudentId(
+      studentId.current.value
+    );
+    if (studentData) {
+      setStudent(studentData);
+    } else {
+      setShowToast(Math.random());
+      setToastMessage("Không tìm thấy sinh viên!!");
+    }
+  };
 
+  const generatePdf = async () => {
+    if (tab === "activity") {
+      if (!result || !student) {
+        setShowToast(Math.random());
+        setToastMessage("Không có dữ liệu sinh viên");
+        return;
+      }
+      const data = await fetchGeneratePdf(
+        tranformPdfResultData(
+          result,
+          student.user.lastName + " " + student.user.firstName,
+          student.studentId
+        )
+      );
+      const blob = new Blob([data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, "_blank");
+    } else {
+      if (!missings || !student) {
+        setShowToast(Math.random());
+        setToastMessage("Không có dữ liệu sinh viên");
+        return;
+      }
+      const data = await fetchGeneratePdf(
+        tranformPdfMisssingtData(
+          missings,
+          student.user.lastName + " " + student.user.firstName,
+          student.studentId
+        )
+      );
+      const blob = new Blob([data], { type: "application/pdf" });
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, "_blank");
     }
-    else {
-      setShowToast(Math.random())
-      setToastMessage("Không tìm thấy sinh viên!!")
+  };
+
+  const getResult = async () => {
+    if (student && student.user) {
+      const studentMissing = await fetchGetMissingReportByUserId(
+        student.user.id,
+        1
+      );
+      const studentActivity = await fetchGetResultByUserId(student.user.id);
+      setResult(studentActivity);
+      setMissings(studentMissing);
     }
-  }
+  };
+
+  useEffect(() => {
+    getResult();
+  }, [student?.user?.id]);
 
   const [showToast, setShowToast] = useState(0);
-  const [toastMessage, setToastMessage] = useState("");
+  const [toastMessage, setToastMessage] = useState();
 
   return (
     <div className="p-6">
@@ -50,9 +111,14 @@ export default function AssistantAchivement() {
           <div className="flex mt-4 justify-between">
             <div className="flex">
               <Input type="text" placeholder="MSSV" ref={studentId} />
-              <SecondaryButton className="rounded-sm" onClick={handleGetData}>Tìm kiếm</SecondaryButton>
+              <SecondaryButton className="rounded-sm" onClick={handleGetData}>
+                Tìm kiếm
+              </SecondaryButton>
             </div>
-            <SecondaryButton className="flex items-center gap-2 rounded-sm px-4">
+            <SecondaryButton
+              className="flex items-center gap-2 rounded-sm px-4"
+              onClick={generatePdf}
+            >
               <IoSaveSharp /> Lưu báo cáo
             </SecondaryButton>
           </div>
@@ -137,10 +203,10 @@ export default function AssistantAchivement() {
                 <div className="border rounded-sm border-slate-500 max-h-[340px] overflow-auto">
                   {tab == "activity" && (
                     <table className="w-full ">
-                      <ActivityRow />
-                      <ActivityRow />
-                      <ActivityRow />
-                      <ActivityRow />
+                      {result &&
+                        result.map((data) => (
+                          <ActivityRow key={data.id} data={data} />
+                        ))}
                     </table>
                   )}
 
@@ -148,15 +214,17 @@ export default function AssistantAchivement() {
                     <table className="w-full ">
                       <thead>
                         <tr className="p-3 px-4 hover:bg-slate-100 text-center font-medium text-mainBlue bg-blue-50">
-                          <td className="px-6 w-1/2 text-left">Nhiệm vụ</td>
-                          <td className="py-3 px-6 w-1/4">Ngày yêu cầu</td>
+                          <td className="px-6 w-1/4 text-left">Nhiệm vụ</td>
+                          <td className="py-3 px-6 w-1/4">Điểm</td>
+                          <td className="py-3 px-6 w-1/4">Tình trạng</td>
                           <td className="py-3 px-6 w-1/4">Chi tiết</td>
                         </tr>
                       </thead>
                       <tbody>
-                        <MissingRow />
-                        <MissingRow />
-                        <MissingRow />
+                        {missings &&
+                          missings.map((missing, index) => (
+                            <MissingRow key={missing.id} missing={missing} />
+                          ))}
                       </tbody>
                     </table>
                   )}
@@ -170,19 +238,24 @@ export default function AssistantAchivement() {
   );
 }
 
-const MissingRow = () => {
+const MissingRow = ({ missing }) => {
   const navigate = useNavigate();
   return (
     <>
       <tr className="border-y transition-all ">
-        <td className=" text-slate-600">Hoạt động hiến máu tình nguyện</td>
+        <td className=" text-slate-600" colSpan={4}>
+          {missing.activityName}
+        </td>
       </tr>
 
       <tr className="hover:bg-slate-100 transition-all text-center ">
-        <td className="text-slate-600 px-8 w-1/2 text-left">Tham gia</td>
-        <td className="py-3 px-6 w-1/4">10 hoạt động</td>
+        <td className="text-slate-600 pl-8 w-1/4 text-left">
+          {missing.missionName}
+        </td>
+        <td className="py-3 px-6 w-1/4">{missing.missionPoint}</td>
+        <td className="py-3 px-6 w-1/4">{missing.status}</td>
         <td className="py-3 px-6 w-1/4">
-          <SecondaryButton onClick={() => navigate("/missing/1")}>
+          <SecondaryButton onClick={() => navigate(`/missing/${missing.id}`)}>
             Chi tiết
           </SecondaryButton>
         </td>
@@ -191,7 +264,7 @@ const MissingRow = () => {
   );
 };
 
-const ActivityRow = () => {
+const ActivityRow = ({ data }) => {
   const [showDetail, setShowDetail] = useState(false);
   return (
     <>
@@ -200,20 +273,36 @@ const ActivityRow = () => {
         onClick={() => setShowDetail(!showDetail)}
       >
         <td className="p-4 px-6">
-          <span className="font-medium text-mainBlue">Hoạt động điều 1:</span>
+          <span className="font-medium text-mainBlue">
+            Hoạt động {data.name}:
+          </span>
         </td>
-        <td className="py-3 px-6">10 hoạt động</td>
+        <td className="py-3 px-6">{data?.listActivity?.length} hoạt động</td>
       </tr>
-      {showDetail && (
-        <tr className="hover:bg-slate-100 transition-all">
-          <td className="py-4 pl-10">
-            <span className="font-medium text-mainBlue">
-              Hoạt động mùa hè xanh
-            </span>
-          </td>
-          <td className="py-3 px-6">+10 đ</td>
-        </tr>
-      )}
+      {showDetail &&
+        data?.listActivity.map((activity) => (
+          <React.Fragment key={activity.activityId}>
+            <tr className="hover:bg-slate-100 transition-all">
+              <td className="py-4 pl-4" colSpan={2}>
+                <span className="font-medium text-mainBlue">
+                  {activity.activityName}
+                </span>
+              </td>
+            </tr>
+            {activity.missionResultDTOList &&
+              activity.missionResultDTOList.map((mission) => (
+                <tr
+                  key={mission.missionId}
+                  className="hover:bg-slate-100 transition-all text-sm"
+                >
+                  <td className="py-2 pl-10">
+                    <span className="font-medium">{mission.missionName}</span>
+                  </td>
+                  <td className="py-2 px-6">+{mission.point} đ</td>
+                </tr>
+              ))}
+          </React.Fragment>
+        ))}
     </>
   );
 };
