@@ -50,13 +50,8 @@ export const API = {
   // STATS
   statsByRank: `${baseURL}/stats/training-points/rank`,
   statsByFaculty: `${baseURL}/stats/training-points/faculty`,
-
   //PERIOD
   getAllPeriod: (year) => `${baseURL}/period?year=${year}`,
-
-  //MESSAGES
-  sendMessage: `${baseURL}/chat/send`,
-  getUsers: `${baseURL}/chat/get-users`,
 
   // PDF
   generatePdf: `${rootURL}/generatePdf`
