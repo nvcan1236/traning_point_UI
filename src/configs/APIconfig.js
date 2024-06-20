@@ -29,5 +29,5 @@ export const API = {
   getAllPeriod: (year) => `${baseURL}/period?year=${year}`,
 
   // PDF
-  generatePdf: `${rootURL}/generatePdf`
+  generatePdf: `${baseURL}/generatePdf`
 };
