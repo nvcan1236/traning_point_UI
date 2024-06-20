@@ -203,6 +203,14 @@ export default function AssistantAchivement() {
                 <div className="border rounded-sm border-slate-500 max-h-[340px] overflow-auto">
                   {tab == "activity" && (
                     <table className="w-full ">
+                    <thead>
+                        <tr className="p-3 px-4 hover:bg-slate-100 text-center font-medium text-mainBlue bg-blue-50">
+                          {/* <td className="py-3 px-6 w-1/4">Hoạt động</td> */}
+                          <td className="px-6 w-1/4 text-left">Nhiệm vụ</td>
+                          {/* <td className="py-3 px-6 w-1/4">Điều</td> */}
+                          <td className="py-3 px-6 w-1/4">Điểm</td>
+                        </tr>
+                      </thead>
                       {result &&
                         result.map((data) => (
                           <ActivityRow key={data.id} data={data} />

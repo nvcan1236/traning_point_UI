@@ -90,8 +90,8 @@ function App() {
       )}
 
       {user && ["ROLE_ASSISTANT", "ROLE_ADMIN"].includes(user.role)  && (
-        <Route path="/" element={<AssistantLayout />}>
-          <Route index element={<AssistantHome />} />
+        <Route path="/"  element={<AssistantLayout />}>
+          <Route  element={<AssistantHome />} />
           <Route path="profile" element={<Profile />} />
           <Route path="post" element={<AssistantPost />} />
           <Route path="post/edit/" element={<AssistantEditPostPage />} />
