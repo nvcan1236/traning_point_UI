@@ -7,18 +7,32 @@ import { useEffect, useState } from "react";
 import { fetchDetailActivity } from "../../hooks/useFetch";
 import Loading from "../../components/layout/Loading";
 import BackButton from "../../components/Buttons/BackButton";
+import FileUploadModal from "../../components/Activity/FileUploadModal";
 
 export default function AssistantDetailActivity() {
   const navigate = useNavigate();
   const { activityId } = useParams();
   const [activity, setActivity] = useState();
+  const [isModalOpen, setIsModalOpen] = useState(false); 
+
   const getActivity = async (id) => {
     const data = await fetchDetailActivity(id);
     setActivity(data);
   };
+
   useEffect(() => {
     getActivity(activityId);
   }, [activityId]);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
+
   return (
     <>
       <div className="p-6">
@@ -40,7 +54,7 @@ export default function AssistantDetailActivity() {
                 </p>
               </div>
               <div className="flex gap-2">
-                <PrimaryButton className={"rounded-sm flex gap-2 items-center"}>
+                <PrimaryButton className={"rounded-sm flex gap-2 items-center"} onClick={openModal}>
                   <IoReaderSharp /> Nạp DS điểm danh
                 </PrimaryButton>
                 <SecondaryButton
@@ -89,6 +103,8 @@ export default function AssistantDetailActivity() {
           <Loading radius={30} className="my-40" />
         )}
       </div>
+
+      <FileUploadModal isOpen={isModalOpen} onRequestClose={closeModal} activityId={activityId} />
     </>
   );
 }
