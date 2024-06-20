@@ -25,5 +25,9 @@ export const API = {
   addMission: (activityId) => `${baseURL}/activities/${activityId}/missions`,
   statsByRank: `${baseURL}/stats/training-points/rank`,
   statsByFaculty: `${baseURL}/stats/training-points/faculty`,
-  getAllPeriod: (year) => `${baseURL}/period?year=${year}`
+  //PERIOD
+  getAllPeriod: (year) => `${baseURL}/period?year=${year}`,
+
+  // PDF
+  generatePdf: `${rootURL}/generatePdf`
 };
