@@ -40,7 +40,7 @@ const Chat = ({ selectedChat }) => {
   };
 
   return (
-    <div className="chat-container rounded-sm flex-grow h-full bg-slate-100">
+    <div className="chat-container rounded-sm flex-grow h-full bg-slate-100 ">
       {selectedChat ? (
         <div className="flex flex-col h-full">
           <h2 className="bg-tintBlue py-4 px-6 text-mainBlue font-medium flex gap-3 items-center ">
@@ -56,7 +56,7 @@ const Chat = ({ selectedChat }) => {
                 className={`message max-w-[500px] w-fit py-2 px-4 rounded-md ${
                   msg.sender === user.id.toString()
                     ? "ml-auto bg-tintBlue text-mainBlue rounded-br-none"
-                    : "mr-auto  border border-tintBlue rounded-bl-none"
+                    : "mr-auto  border border-tintBlue text-slate-800 rounded-bl-none"
                 }`}
               >
                 {msg.message}

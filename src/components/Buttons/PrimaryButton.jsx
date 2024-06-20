@@ -1,8 +1,9 @@
+/* eslint-disable react/prop-types */
 import PropTypes from 'prop-types';
 
-const PrimaryButton = ({children, className, ...props}) => {
+const PrimaryButton = ({children, className, onClick, ...props}) => {
   return (
-    <button className={`px-4 text-base py-2 bg-mainBlue text-white rounded-md  ${className}`} {...props}>
+    <button className={`px-4 text-base py-2 bg-mainBlue text-white rounded-md  ${className}`} onClick={onClick} {...props}>
       {children}
     </button>
   )

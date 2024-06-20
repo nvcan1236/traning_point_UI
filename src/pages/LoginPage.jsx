@@ -28,7 +28,7 @@ export default function LoginPage() {
     try {
       const response = await fetch(`${API.login}`, {
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         method: "POST",
         body: JSON.stringify(formik.values),
@@ -70,7 +70,7 @@ export default function LoginPage() {
         className="mx-auto flex flex-col gap-4 w-1/3 px-10"
         onSubmit={formik.handleSubmit}
       >
-        <div className="text-blue-700 text-xl text-center font-semibold">
+        <div className="text-mainBlue text-xl text-center font-semibold">
           Đăng nhập
         </div>
         <FormGroup
@@ -121,23 +121,13 @@ export default function LoginPage() {
           )}
         </PrimaryButton>
 
-        <div className="border-t border-t-1 my-5 border-t-slate-300 relative">
+        {/* <div className="border-t border-t-1 my-5 border-t-slate-300 relative">
           <span className="absolute -top-3 px-3 bg-blue-50 left-1/2 -translate-x-1/2">
             hoặc{" "}
           </span>
-        </div>
+        </div> */}
 
-        <PrimaryButton
-          className="w-full bg-white flex justify-center items-center border border-slate-500 gap-1 !text-slate-950"
-          type="submit"
-        >
-          Login with
-          <img
-            src="https://cdn-teams-slug.flaticon.com/google.jpg"
-            alt=""
-            className="w-8 h-8 object-cover rounded-full"
-          />
-        </PrimaryButton>
+        
 
         <div className="mt-4 text-center">
           Chưa có tài khoản ?
@@ -149,8 +139,8 @@ export default function LoginPage() {
         <div
           className="text-center text-mainBlue font-semibold cursor-pointer"
           onClick={() => {
-            setIsAssistant(!isAssistant)
-            setIsAdmin(!isAdmin)
+            setIsAssistant(!isAssistant);
+            setIsAdmin(!isAdmin);
           }}
         >
           Đăng nhập với vai trò {isAssistant ? "Sinh viên" : "Trợ lý"}

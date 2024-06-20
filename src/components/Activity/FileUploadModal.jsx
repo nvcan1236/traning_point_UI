@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
+import { useState } from 'react';
 import ReactModal from 'react-modal';
 import SecondaryButton from '../Buttons/SecondaryButton';
 import PrimaryButton from '../Buttons/PrimaryButton';

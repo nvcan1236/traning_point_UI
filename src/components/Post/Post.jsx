@@ -119,7 +119,7 @@ function Post({ post }) {
   }, [showComment, showMissions]);
 
   return (
-    <div className="flex gap-4 p-4 text-sm border  border-tintBlue rounded-md post-images">
+    <div className="flex gap-4 p-4 text-sm border  border-tintBlue rounded-md post-images" >
       <Swiper
         slidesPerView="auto"
         pagination={{

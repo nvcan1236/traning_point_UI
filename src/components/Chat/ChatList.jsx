@@ -14,7 +14,7 @@ import Avatar from "../Images/Avatar";
  * lastCreateAt
  * }
  */
-export default function ChatList({ onChatSelect }) {
+export default function ChatList({ onChatSelect, ...props }) {
   const { user } = useAuth();
   const roomCondition = useMemo(() => {
     return {
@@ -56,7 +56,7 @@ export default function ChatList({ onChatSelect }) {
   }, [chatRooms]);
 
   return (
-    <div className="chat-list">
+    <div className="chat-list" {...props}>
       <ul>
         {rooms.map((room) => (
           <li

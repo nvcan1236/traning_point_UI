@@ -65,7 +65,7 @@ export default function Profile() {
             {user.lastName} {user.firstName}
           </span>
         </div>
-        <div>
+        {/* <div>
           Giới tính :{" "}
           <span
             contentEditable={editing}
@@ -73,7 +73,7 @@ export default function Profile() {
           >
             {user.gender}
           </span>
-        </div>
+        </div> */}
         <div>
           Ngày sinh:{" "}
           <span
