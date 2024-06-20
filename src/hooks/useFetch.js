@@ -156,8 +156,9 @@ const fetchUpdateActivity = async (bodyData, activityId) => {
     if (!res.ok) {
       throw new Error("Something went wrong!!!");
     }
-    const data = await res.json();
-    return data;
+    console.info(res.status);
+    alert("Lưu thành công")
+   
   } catch (ex) {
     console.log(ex);
   }
@@ -496,24 +497,22 @@ const fetchGeneratePdf = async (bodyData) => {
   }
 }
 
+const fetchUploadActivity = async (activityId, file) => {
+  const formData = new FormData();
+  formData.append("file", file);
 
-const getUsers = async() => {
-  try {
-    const res = await fetch(API.getUsers, {
-      headers: {
-        Authorization: localStorage.getItem("USER_TOKEN"),
-      },
-      method: "GET",
-    });
-    if (!res.ok) {
-      throw new Error("Something went wrong!!");
-    }
-    const data = await res.json();
-    return data;
-  } catch (ex) {
-    console.log(ex);
+  const res = await fetch(API.uploadActivity(activityId), {
+    headers: {
+      Authorization: localStorage.getItem("USER_TOKEN"),
+    },
+    method: "POST",
+    body: formData,
+  });
+  if (res.ok) {
+    console.log("Nạp danh sách thành công");
+    return res.ok;
   }
-}
+};
 
 export {
   fetchRegister,
@@ -544,5 +543,5 @@ export {
   fetchStatsByRank,
   fetchStatsByFaculty,
   fetchGeneratePdf,
-  getUsers
+  fetchUploadActivity
 };
