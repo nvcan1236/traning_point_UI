@@ -543,5 +543,6 @@ export {
   fetchDetailFaculty,
   fetchStatsByRank,
   fetchStatsByFaculty,
-  fetchGeneratePdf
+  fetchGeneratePdf,
+  getUsers
 };

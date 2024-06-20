@@ -38,6 +38,7 @@ function Post({ post }) {
       headers: {
         Authorization: localStorage.getItem("USER_TOKEN"),
       },
+      
     });
     if (res.ok) {
       const data = await res.json();

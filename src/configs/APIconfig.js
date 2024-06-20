@@ -44,8 +44,8 @@ export const API = {
     `${baseURL}/missing-report/faculty?facultyId=${facultyId}`,
   getDetailMissingReport: (missingReportId) => `${baseURL}/missing-report/${missingReportId}`,
   updateMissingReport: (missingReportId) => `${baseURL}/missing-report/${missingReportId}`,
-  getResultById:  (userId) => `${baseURL}students/result-training-point?id=${userId}`,
-  getMissingReportById:  (userId, periodId) => `${baseURL}missing-report/student?studentId=${userId}&periodId=${periodId}`,
+  getResultById:  (userId) => `${baseURL}/students/result-training-point?id=${userId}`,
+  getMissingReportById:  (userId, periodId) => `${baseURL}/missing-report/student?studentId=${userId}&periodId=${periodId}`,
 
   // STATS
   statsByRank: `${baseURL}/stats/training-points/rank`,

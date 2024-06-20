@@ -66,7 +66,7 @@ function CommonProvider(props) {
 function useCommon() {
   const context = useContext(CommonContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within AuthProvider");
+    throw new Error("useAuth must be used within Provider");
   }
   return context;
 }
