@@ -27,7 +27,6 @@ export default function AssistantHeader() {
     });
     setOptions(arr);
     setSelectedOption(arr[0]);
-    console.log();
   };
 
   useEffect(() => {
@@ -76,7 +75,7 @@ export default function AssistantHeader() {
         <SelectBox
           className="rounded-lg py-1 "
           options={
-            options && options.lenth > 0
+            options && options.length > 0
               ? options
               : [{ id: 1, name: "Học kỳ", value: 1 }]
           }

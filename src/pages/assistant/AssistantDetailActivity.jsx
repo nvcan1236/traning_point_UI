@@ -30,8 +30,8 @@ export default function AssistantDetailActivity() {
             <div className="flex justify-between items-end">
               <div className="flex-1">
                 <Heading className="text-2xl mb-3">{activity.name}</Heading>
-                <p>Khoa Công nghệ thông tin</p>
-                <p>Kì 1 năm học 2023-2024</p>
+                <p>Khoa {activity?.faculty.name}</p>
+                <p>{activity.periodName}</p>
                 <p>
                   Hoạt động{" "}
                   <span className="font-semibold text-lg text-mainBlue">

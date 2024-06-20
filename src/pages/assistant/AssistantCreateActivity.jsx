@@ -43,7 +43,7 @@ export default function AssistantCreateActivity() {
   const validationSchema = Yup.object({
     name: Yup.string().required("Thông tin bắt buộc"),
     faculty: Yup.number().required("Thông tin bắt buộc"),
-    semester: Yup.string().required("Thông tin bắt buộc"),
+    period: Yup.string().required("Thông tin bắt buộc"),
     pointGroup: Yup.number().required("Thông tin bắt buộc"),
     maxPoint: Yup.number().required("Thông tin bắt buộc"),
   });
@@ -62,14 +62,14 @@ export default function AssistantCreateActivity() {
     formik.setValues({
       name: data.name,
       faculty: 1,
-      semester: 1,
+      period: 1,
       pointGroup: data.pointGroup.id,
       maxPoint: data.maxPoint,
     });
     setActivity(data);
   };
 
-  const { faculties, pointGroups } = useCommon();
+  const { faculties, pointGroups, periods } = useCommon();
 
   useEffect(() => {
     activityId && getActivity(activityId);
@@ -84,8 +84,8 @@ export default function AssistantCreateActivity() {
   };
 
   const handleSubmitDelete = () => {
-    // fetchDeleteActivity(activityId)
-    navigate('/activities')
+    fetchDeleteActivity(activityId);
+    navigate("/activities");
     setShowModal(false);
   };
 
@@ -135,6 +135,7 @@ export default function AssistantCreateActivity() {
                   onBlur={formik.handleBlur}
                   name="faculty"
                   className={"text-sm !bg-white !text-black border"}
+                  value={activity?.faculty.name}
                 ></SelectBox>
               </FormGroup>
 
@@ -142,12 +143,23 @@ export default function AssistantCreateActivity() {
                 vertical
                 label={"Kỳ học"}
                 className="flex-1"
-                message={formik.errors.semester}
-                touched={formik.touched.semester}
+                message={formik.errors.period}
+                touched={formik.touched.period}
               >
-                <Input
+                {/* <Input
                   className={"text-sm w-full"}
-                  {...formik.getFieldProps("semester")}
+                  {...formik.getFieldProps("period")}
+                /> */}
+                <SelectBox
+                  className="text-sm !bg-white !text-black border"
+                  options={periods.map((period) => ({
+                    id: period.id,
+                    name: `Học kì ${period.semester} - ${period.year}`,
+                    value: period.id,
+                  }))}
+                  name="period"
+                  onChange={formik.setFieldValue}
+                  value={activity?.periodName}
                 />
               </FormGroup>
             </div>
@@ -189,13 +201,15 @@ export default function AssistantCreateActivity() {
             </div>
 
             <div className="flex justify-end mt-2 gap-2">
-              {activityId && <TransparentButton
-                className="font-semibold text-red-600 bg-red-100"
-                onClick={handleDelete}
-                type="button"
-              >
-                Xoá
-              </TransparentButton>}
+              {activityId && (
+                <TransparentButton
+                  className="font-semibold text-red-600 bg-red-100"
+                  onClick={handleDelete}
+                  type="button"
+                >
+                  Xoá
+                </TransparentButton>
+              )}
               <PrimaryButton className={`rounded-sm px-8 `} type="submit">
                 Lưu
               </PrimaryButton>
