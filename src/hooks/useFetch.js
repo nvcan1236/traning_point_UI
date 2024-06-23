@@ -45,6 +45,21 @@ const fetchFaculties = async () => {
   }
 };
 
+const fetchGetFacultyClasses = async (facultyId) => {
+  try {
+    const res = await fetch(API.getFacultyClass(facultyId), {
+      method: "GET",
+    });
+    if (!res.ok) {
+      throw new Error("Something went wrong!!");
+    }
+    const data = await res.json();
+    return data;
+  } catch (ex) {
+    console.log(ex);
+  }
+};
+
 const fetchDetailFaculty = async () => {
   const res = await fetch(API.getFacultyByAssistant, {
     headers: {
@@ -157,8 +172,7 @@ const fetchUpdateActivity = async (bodyData, activityId) => {
       throw new Error("Something went wrong!!!");
     }
     console.info(res.status);
-    alert("Lưu thành công")
-   
+    alert("Lưu thành công");
   } catch (ex) {
     console.log(ex);
   }
@@ -222,6 +236,7 @@ const fetchPosts = async () => {
     console.log(ex);
   }
 };
+
 const fetchAddPost = async (post) => {
   try {
     const formData = new FormData();
@@ -385,10 +400,10 @@ const fetchUpdateStatusMissingReport = async (missingReportId, bodyData) => {
     const res = await fetch(API.getDetailMissingReport(missingReportId), {
       headers: {
         Authorization: localStorage.getItem("USER_TOKEN"),
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       method: "POST",
-      body: JSON.stringify(bodyData)
+      body: JSON.stringify(bodyData),
     });
     if (!res.ok) {
       throw new Error("Something went wrong!!");
@@ -400,7 +415,7 @@ const fetchUpdateStatusMissingReport = async (missingReportId, bodyData) => {
   }
 };
 
-const fetchGetMissingReportByUserId= async (userId, periodId) => {
+const fetchGetMissingReportByUserId = async (userId, periodId) => {
   try {
     const res = await fetch(API.getMissingReportById(userId, periodId), {
       headers: {
@@ -479,23 +494,23 @@ const fetchStatsByFaculty = async () => {
     const data = res.json();
     return data;
   }
-}
+};
 
 const fetchGeneratePdf = async (bodyData) => {
   const res = await fetch(API.generatePdf, {
     headers: {
-        "Content-Type": "application/json"
+      "Content-Type": "application/json",
     },
     body: JSON.stringify(bodyData),
     method: "POST",
-    responseType: 'blob'
+    responseType: "blob",
   });
 
   if (res.ok) {
     const data = await res.blob(); // Nhận dữ liệu dưới dạng blob
     return data;
   }
-}
+};
 
 const fetchUploadActivity = async (activityId, file) => {
   const formData = new FormData();
@@ -513,6 +528,19 @@ const fetchUploadActivity = async (activityId, file) => {
     return res.ok;
   }
 };
+
+const fetchGetAssistant = async () => {
+  const res = await fetch(API.getAllAssistant, {
+    headers: {
+      Authorization: localStorage.getItem("USER_TOKEN"),
+    },
+    method: "GET",
+  });
+  if (res.ok) {
+    const data = res.json();
+    return data;
+  }
+}
 
 export {
   fetchRegister,
@@ -543,5 +571,7 @@ export {
   fetchStatsByRank,
   fetchStatsByFaculty,
   fetchGeneratePdf,
-  fetchUploadActivity
+  fetchUploadActivity,
+  fetchGetFacultyClasses,
+  fetchGetAssistant
 };

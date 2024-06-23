@@ -8,7 +8,7 @@ import Loading from "../components/layout/Loading";
 import { fetchPosts } from "../hooks/useFetch";
 
 export default function PostPage() {
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState();
   const [originPosts, setOriginPosts] = useState([]);
 
   const sideNavData = [
@@ -90,7 +90,7 @@ export default function PostPage() {
         {posts &&
           posts.length > 0 &&
           posts.map((post) => <Post key={post.id} post={post} />)}
-        {!posts && <Loading className="my-10" />}
+        {!posts && <Loading className="my-20" radius={40} />}
         {posts && posts == 0 && (
           <p className="text-center py-40 text-slate-400">
             (Không có bài đăng)

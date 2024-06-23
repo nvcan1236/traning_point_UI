@@ -4,7 +4,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/authContext";
 import PrimaryButton from "../Buttons/PrimaryButton";
-import SelectBox from "../formControls/SelectBox";
+// import SelectBox from "../formControls/SelectBox";
 import Hover from "./Hover";
 import {
   IoBarChartOutline,
@@ -140,9 +140,9 @@ export default function Header() {
             </NavLink>
           </li>
         )}
-        <li>
+        {/* <li>
           <SelectBox
-            className="rounded-lg py-1 text-sm w-[140px]"
+            className="rounded-lg py-1 text-sm w-[160px]"
             options={[
               { id: 1, name: "HK1 - 2024", value: 1 },
               { id: 2, name: "HK2 - 2024", value: 2 },
@@ -152,7 +152,7 @@ export default function Header() {
               console.log(`${name}: ${value}`);
             }}
           />
-        </li>
+        </li> */}
       </ul>
     </div>
   );

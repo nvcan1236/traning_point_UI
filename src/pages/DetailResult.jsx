@@ -99,7 +99,7 @@ export default function DetailResult() {
           <div className="mt-8" key={pg.id}>
             <div>
               <h3 className="font-semibold">Điều {pg.id}</h3>
-              <p className="text-slate-500 text-sm">{pg.content}</p>
+              <p className="text-slate-500 text-sm">{pg.content} - {pg.maxPoint} điểm</p>
             </div>
 
             <div className="border rounded-lg mt-5 p-5">
@@ -133,7 +133,8 @@ export default function DetailResult() {
                         <Fragment key={data.mission.id}>
                           <tr>
                             <td colSpan={10} className="text-left">
-                              {data.mission.activity.name}
+                              {`${data.mission.activity.name} `}  
+                              {/* - Tối đa ${data.mission.activity.maxPoint} điểm */}
                             </td>
                           </tr>
                           <tr>
@@ -153,9 +154,13 @@ export default function DetailResult() {
                             </td>
                             <td className="text-center text-sm">
                               {!data.isCompleted ? (
-                                <SecondaryButton className={'text-sm'}>Báo thiếu</SecondaryButton>
+                                <SecondaryButton className={"text-sm"}>
+                                  Báo thiếu
+                                </SecondaryButton>
                               ) : (
-                                <span className="text-slate-400">Đã hoàn thành</span>
+                                <span className="text-slate-400">
+                                  Đã hoàn thành
+                                </span>
                               )}
                             </td>
                           </tr>

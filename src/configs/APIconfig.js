@@ -7,10 +7,12 @@ export const API = {
   register: `${baseURL}/user/register`,
   currentUser: `${baseURL}/user/current`,
   getStudentByStudentId: (studentId)=>`${baseURL}/students/${studentId}`,
+  getAllAssistant: `${baseURL}/assistants`,
 
   // FACULTY
   getAllFaculties: `${baseURL}/faculties`,
   getFacultyByAssistant: `${baseURL}/assistants/faculties`,
+  getFacultyClass: (facultyId) => `${baseURL}/faculties/${facultyId}/classes`,
 
   // POINT GROUP
   getAllPointGroup: `${baseURL}/point-groups`,
