@@ -106,7 +106,7 @@ const MissingItem = ({ missing }) => {
   };
   return (
     <li
-      className="flex py-4 px-3 transition-all hover:bg-slate-50 rounded-lg cursor-pointer text-left"
+      className="flex items-center py-4 px-3 transition-all hover:bg-slate-50 rounded-lg cursor-pointer text-left"
       onClick={() => navigate(`./${missing.id}`)}
     >
       <span className="w-[10%] line-clamp-1 pl-2">{missing.studentId}</span>

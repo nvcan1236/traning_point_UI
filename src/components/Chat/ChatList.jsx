@@ -89,6 +89,7 @@ export default function ChatList({ onChatSelect, ...props }) {
 
     if (existingChat) {
       console.log("Chat already exists.");
+
       return;
     }
 
@@ -110,7 +111,7 @@ export default function ChatList({ onChatSelect, ...props }) {
 
   return (
     <div {...props}>
-      <div className="max-h-80 overflow-y-auto">
+      <div className="max-h-40 overflow-y-auto">
         <ul className="divide-y divide-gray-200">
           {rooms.map((room) => (
             <li
@@ -141,7 +142,7 @@ export default function ChatList({ onChatSelect, ...props }) {
           <h3 className="mt-10 font-semibold text-slate-600 ">
             Danh sách trợ lý
           </h3>
-          <div className="max-h-80 overflow-y-auto">
+          <div className="max-h-40 overflow-y-auto">
             <ul className="flex flex-col gap-4 mt-5">
               {assistants &&
                 assistants.map((assistant) => (

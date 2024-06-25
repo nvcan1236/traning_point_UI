@@ -10,11 +10,13 @@ import { Fragment, useEffect, useState } from "react";
 import { fetchAllPointGroup, fetchUserMission } from "../hooks/useFetch";
 import Loading from "../components/layout/Loading";
 import { getStatsReport } from "../utils/statsUtils";
+import { useNavigate } from "react-router-dom";
 
 export default function DetailResult() {
   const [missions, setMissions] = useState();
   const [pointGroup, setPointGroups] = useState();
   const [report, setReport] = useState();
+  const navigate = useNavigate()
 
   const getPointGroups = async () => {
     const data = await fetchAllPointGroup();
@@ -154,7 +156,7 @@ export default function DetailResult() {
                             </td>
                             <td className="text-center text-sm">
                               {!data.isCompleted ? (
-                                <SecondaryButton className={"text-sm"}>
+                                <SecondaryButton className={"text-sm"} onClick={()=>navigate("/activities")}>
                                   Báo thiếu
                                 </SecondaryButton>
                               ) : (

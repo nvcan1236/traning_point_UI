@@ -11,7 +11,7 @@ import Loading from "../components/layout/Loading";
 import FormGroup from "../components/formControls/FormGroup";
 
 export default function LoginPage() {
-  const { dispatch } = useAuth();
+  const { dispatch, setRequireAssistant } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [isAssistant, setIsAssistant] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -67,7 +67,7 @@ export default function LoginPage() {
   return (
     <>
       <form
-        className="mx-auto flex flex-col gap-4 w-1/3 px-10"
+        className="mx-auto flex flex-col gap-4 w-full md:px-10 lg:w-1/3"
         onSubmit={formik.handleSubmit}
       >
         <div className="text-mainBlue text-xl text-center font-semibold">
@@ -111,23 +111,23 @@ export default function LoginPage() {
           onClick={() => setShowPassword(!showPassword)}
         />
 
-        <PrimaryButton className="w-full mt-2" type="submit">
-          {loading ? (
-            <Loading radius={24} />
-          ) : isAssistant ? (
-            "Login as Assistant"
-          ) : (
-            "Login"
-          )}
-        </PrimaryButton>
+        {loading ? (
+          <Loading radius={24} />
+        ) : isAssistant ? (
+          <PrimaryButton className="w-full mt-2" type="submit" onClick={()=>setRequireAssistant(true)}>
+            Login as Assistant
+          </PrimaryButton>
+        ) : (
+          <PrimaryButton className="w-full mt-2" type="submit" onClick={()=>setRequireAssistant(false)}>
+            Login
+          </PrimaryButton>
+        )}
 
         {/* <div className="border-t border-t-1 my-5 border-t-slate-300 relative">
           <span className="absolute -top-3 px-3 bg-blue-50 left-1/2 -translate-x-1/2">
             hoặc{" "}
           </span>
         </div> */}
-
-        
 
         <div className="mt-4 text-center">
           Chưa có tài khoản ?

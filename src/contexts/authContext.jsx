@@ -1,12 +1,13 @@
 /* eslint-disable no-unused-vars */
-import { createContext, useContext, useReducer } from "react";
+import { createContext, useContext, useReducer, useState } from "react";
 import userReducer, { initialUser } from "../reducers/userReducer";
 
 const AuthContext = createContext();
 
 function AuthProvider(props) {
   const [user, dispatch] = useReducer(userReducer, null);
-  const value = { user, dispatch };
+  const [requireAssistant, setRequireAssistant] = useState(false)
+  const value = { user, dispatch,requireAssistant, setRequireAssistant };
 
   return <AuthContext.Provider value={value} {...props}></AuthContext.Provider>;
 }

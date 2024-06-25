@@ -28,7 +28,7 @@ import MissingReport from "./pages/MissingReport";
 import AssistantChat from "./pages/assistant/AssistantChat";
 
 function App() {
-  const { user, dispatch } = useAuth();
+  const { user, dispatch, requireAssistant } = useAuth();
   const navigate = useNavigate();
 
   const token = localStorage.getItem("USER_TOKEN");
@@ -77,7 +77,7 @@ function App() {
 
   return (
     <Routes>
-      {user && user.role === "ROLE_STUDENT" && (
+      {user && !requireAssistant && (
         <Route path="/" element={<MainLayout />}>
           <Route index element={<HomePage />} />
           <Route path="post/*" element={<PostPage />} />
@@ -89,7 +89,7 @@ function App() {
         </Route>
       )}
 
-      {user && ["ROLE_ASSISTANT", "ROLE_ADMIN"].includes(user.role)  && (
+      {user && ["ROLE_ASSISTANT", "ROLE_ADMIN"].includes(user.role) && requireAssistant && (
         <Route path="/"  element={<AssistantLayout />}>
           <Route  element={<AssistantHome />} />
           <Route path="profile" element={<Profile />} />

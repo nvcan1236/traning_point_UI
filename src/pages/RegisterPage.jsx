@@ -110,9 +110,9 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="w-1/3 px-10 ">
+    <div className="w-full md:px-10 lg:w-1/3 px-10 ">
       <form
-        className="mx-auto flex flex-col gap-4 text-sm w-full overflow-x-hidden"
+        className="mx-auto flex flex-col gap-4 text-sm overflow-x-hidden w-full"
         onSubmit={formik.handleSubmit}
       >
         <div className="text-mainBlue text-xl text-center font-semibold ">
@@ -125,7 +125,7 @@ export default function RegisterPage() {
           }`}
         >
           {/* step 1 */}
-          <div className="shrink-0 w-full">
+          <div className="shrink-0 w-full ">
             {formFileds.slice(0, 4).map((field) => (
               <FormGroup
                 vertical
@@ -155,7 +155,7 @@ export default function RegisterPage() {
           </div>
 
           {/* step 2 */}
-          <div className="shrink-0 w-full">
+          <div className="shrink-0 w-full ">
             <FormGroup
               vertical
               label={"Khoa"}

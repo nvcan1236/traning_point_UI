@@ -11,11 +11,7 @@ function CommonProvider(props) {
   const [periods, setPeriods] = useState([]);
 
   const getFaculties = async () => {
-    const res = await fetch(API.getAllFaculties, {
-      headers: {
-        Authorization: localStorage.getItem("USER_TOKEN"),
-      },
-    });
+    const res = await fetch(API.getAllFaculties);
 
     if (res.ok) {
       const data = await res.json();
@@ -24,11 +20,7 @@ function CommonProvider(props) {
   };
 
   const getAllPointGroup = async () => {
-    const res = await fetch(API.getAllPointGroup, {
-      headers: {
-        Authorization: localStorage.getItem("USER_TOKEN"),
-      },
-    });
+    const res = await fetch(API.getAllPointGroup);
 
     if (res.ok) {
       const data = await res.json();
@@ -38,15 +30,10 @@ function CommonProvider(props) {
 
   const getPeriodByYear = async () => {
     const year = new Date().getFullYear();
-    const res = await fetch(API.getAllPeriod(year), {
-      headers: {
-        Authorization: localStorage.getItem("USER_TOKEN")
-      },
-    });
+    const res = await fetch(API.getAllPeriod(year));
   
     if (res.ok) {
       const data = await res.json();
-      // console.log(data);
       setPeriods(data);
     }
   }
