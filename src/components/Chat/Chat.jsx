@@ -40,7 +40,7 @@ const Chat = ({ selectedChat }) => {
   };
 
   return (
-    <div className="chat-container rounded-sm flex-grow h-full bg-slate-100 ">
+    <div className="rounded-sm flex-grow h-full bg-slate-100 ">
       {selectedChat ? (
         <div className="flex flex-col h-full">
           <h2 className="bg-tintBlue py-4 px-6 text-mainBlue font-medium flex gap-3 items-center ">
@@ -49,7 +49,7 @@ const Chat = ({ selectedChat }) => {
             </div>
             {`${selectedChat.otherMember.firstName} ${selectedChat.otherMember.lastName}`}
           </h2>
-          <div className="messages h-64 overflow-auto mb-4 flex-1 p-6 flex flex-col gap-3">
+          <div className="h-64 overflow-auto mb-4 flex-1 p-6 flex flex-col gap-3">
             {messages.map((msg) => (
               <div
                 key={msg.id}

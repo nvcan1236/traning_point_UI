@@ -15,7 +15,7 @@ export default function ChatSessionForStudent() {
         >
           <div className="w-[240px] text-sm">
             <div className="font-medium text-base mb-4">Đoạn chat </div>
-            <ChatList onChatSelect={(chat) => setSelectedChat(chat)}></ChatList>
+              <ChatList onChatSelect={(chat) => setSelectedChat(chat)}></ChatList>
           </div>
           <div className="flex-1 rounded-md overflow-hidden">
             <Chat selectedChat={selectedChat}></Chat>
