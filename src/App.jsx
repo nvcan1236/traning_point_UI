@@ -91,7 +91,7 @@ function App() {
 
       {user && ["ROLE_ASSISTANT", "ROLE_ADMIN"].includes(user.role) && requireAssistant && (
         <Route path="/"  element={<AssistantLayout />}>
-          <Route  element={<AssistantHome />} />
+          <Route path="" element={<div className="p-20 rounded-lg shadow-lg shadow-tintBlue mt-10 border-2"><Profile /></div>} />
           <Route path="profile" element={<Profile />} />
           <Route path="post" element={<AssistantPost />} />
           <Route path="post/edit/" element={<AssistantEditPostPage />} />

@@ -1,5 +1,21 @@
+import { useEffect, useState } from "react";
+import { fetchUserMission } from "../hooks/useFetch";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation, Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 export default function HomePage() {
+  const [missions, setMisions] = useState();
+  const getActivities = async () => {
+    let data = await fetchUserMission();
+    setMisions(data);
+  };
+
+  useEffect(() => {
+    getActivities();
+  }, []);
   return (
     <div>
       <div className="relative">
@@ -23,22 +39,38 @@ export default function HomePage() {
         <h3 className="text-lg text-mainBlue font-medium mt-6">
           Hoạt động tuần này
         </h3>
-        <ul className="flex gap-3 mt-4">
-          <li className="py-4 px-8 border border-slate-200 rounded-md w-1/3 flex flex-col gap-2">
-            <h3 className="font-medium ">Khoa CNTT</h3>
-            <p>Điều 1 - 5 điểm</p>
-            <p>Mùa hè xanh</p>
-          </li>
-          <li className="py-4 px-8 border border-slate-200 rounded-md w-1/3 flex flex-col gap-2">
-            <h3 className="font-medium ">Khoa CNTT</h3>
-            <p>Điều 1 - 5 điểm</p>
-            <p>Mùa hè xanh</p>
-          </li>
-          <li className="py-4 px-8 border border-slate-200 rounded-md w-1/3 flex flex-col gap-2">
-            <h3 className="font-medium ">Khoa CNTT</h3>
-            <p>Điều 1 - 5 điểm</p>
-            <p>Mùa hè xanh</p>
-          </li>
+        <ul className="flex gap-3 mt-4 overflow-auto w-full">
+
+          <Swiper
+            slidesPerView="3"
+            pagination={{
+              type: "fraction",
+            }}
+            style={{
+              alignSelf: "start",
+              paddingInline: 60,
+              paddingBottom: 60,
+              fontSize: 14,
+            }}
+            navigation={true}
+            modules={[Pagination, Navigation]}
+          >
+            {missions &&
+              missions.map((item) => (
+                <SwiperSlide key={item.id}>
+                  <li
+                    key={item.mission.id}
+                    className="py-4 px-8 border border-slate-200 rounded-md flex flex-col gap-2 mx-1 shadow-lg shadow-tintBlue"
+                  >
+                    <p className="font-medium">Điều {item.mission.activity.pointGroup} - {item.mission.point} điểm</p>
+                    <h3 className="font-semibold text-lg text-mainBlue">{item.mission.activity.name}</h3>
+                    <h3 className="font-semibold">{item.mission.name}</h3>
+                    <p className="text-sm text-slate-500 h-8">{item.mission.content}</p>
+                    <p className="text-sm text-slate-500">{item.mission.startDate} - {item.mission.endDate}</p>
+                  </li>
+                </SwiperSlide>
+              ))}
+          </Swiper>
         </ul>
       </div>
       <div>

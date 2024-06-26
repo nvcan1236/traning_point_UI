@@ -4,8 +4,8 @@ import {
   IoBarChartSharp,
   IoBarbellSharp,
   IoChatboxSharp,
-  IoHomeSharp,
   IoNewspaperSharp,
+  IoPersonSharp,
   IoReaderSharp,
   IoSchoolSharp,
 } from "react-icons/io5";
@@ -42,8 +42,8 @@ export default function AssistantNavbar() {
         </li>
         <NavbarItem
           to="/"
-          text="Trang chủ"
-          icon={<IoHomeSharp />}
+          text="Hồ sơ"
+          icon={<IoPersonSharp />}
           expand={expand}
         />
         <NavbarItem
