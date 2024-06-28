@@ -38,12 +38,11 @@ export default function AssistantMissionEdit({
     if (isCreate) {
       fetchAddMission(formik.values, activityId);
     } else {
-      console.log(formik.values);
       fetchUpdateMission(formik.values, missionData.id);
     }
 
     setTimeout(() => {
-      setMissionEditing(null);
+      setMissionEditing({});
       setIsCreate(true);
     }, 300);
   };
@@ -85,6 +84,7 @@ export default function AssistantMissionEdit({
   const handleSubmitDelete = () => {
     fetchDeleteMission(missionData.id);
     setShowModal(false);
+    setMissionEditing({})
   };
 
   return (
@@ -97,7 +97,7 @@ export default function AssistantMissionEdit({
         onCancel={hanndleCancelDelete}
         onSubmit={handleSubmitDelete}
       />
-      <div className="flex justify-between items-end">
+      <div className="flex items-end justify-between">
         <Heading>Tạo nhiệm vụ</Heading>{" "}
         <SecondaryButton
           className={"rounded-sm flex gap-2 items-center"}
@@ -107,8 +107,8 @@ export default function AssistantMissionEdit({
           Thêm
         </SecondaryButton>
       </div>
-      <form className="mt-8 flex flex-col gap-4" onSubmit={formik.handleSubmit}>
-        <div className="flex gap-4 justify-between">
+      <form className="flex flex-col gap-4 mt-8" onSubmit={formik.handleSubmit}>
+        <div className="flex justify-between gap-4">
           <FormGroup
             vertical
             label={"Tên nhiệm vụ"}
@@ -148,7 +148,7 @@ export default function AssistantMissionEdit({
             ></TextArea>
           </FormGroup>
         </div>
-        <div className="flex gap-4 justify-between">
+        <div className="flex justify-between gap-4">
           <FormGroup
             vertical
             label={"Ngày bắt đầu"}
@@ -176,9 +176,9 @@ export default function AssistantMissionEdit({
             />
           </FormGroup>
         </div>
-        <div className="flex justify-end mt-5 gap-2 ">
+        <div className="flex justify-end gap-2 mt-5 ">
           {isCreate ? (
-            <PrimaryButton className="rounded-sm px-8 py-1" type="submit">
+            <PrimaryButton className="px-8 py-1 rounded-sm" type="submit">
               Tạo mới
             </PrimaryButton>
           ) : (
@@ -186,7 +186,7 @@ export default function AssistantMissionEdit({
               <TransparentButton className="font-semibold text-red-600 bg-red-100" type="button" onClick={handleDelete}>
                 Xoá
               </TransparentButton>
-              <PrimaryButton className="rounded-sm px-8 py-1" type="submit">
+              <PrimaryButton className="px-8 py-1 rounded-sm" type="submit">
                 Cập nhật
               </PrimaryButton>
             </>

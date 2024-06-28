@@ -103,7 +103,7 @@ export default function AssistantCreateActivity() {
         <div className="w-1/2">
           <Heading>Tạo hoạt động</Heading>
           <form
-            className="mt-8 flex flex-col gap-4 "
+            className="flex flex-col gap-4 mt-8 "
             onSubmit={formik.handleSubmit}
           >
             <FormGroup
@@ -146,10 +146,6 @@ export default function AssistantCreateActivity() {
                 message={formik.errors.period}
                 touched={formik.touched.period}
               >
-                {/* <Input
-                  className={"text-sm w-full"}
-                  {...formik.getFieldProps("period")}
-                /> */}
                 <SelectBox
                   className="text-sm !bg-white !text-black border"
                   options={periods.map((period) => ({
@@ -200,7 +196,7 @@ export default function AssistantCreateActivity() {
               </FormGroup>
             </div>
 
-            <div className="flex justify-end mt-2 gap-2">
+            <div className="flex justify-end gap-2 mt-2">
               {activityId && (
                 <TransparentButton
                   className="font-semibold text-red-600 bg-red-100"
@@ -220,7 +216,7 @@ export default function AssistantCreateActivity() {
             <h3 className="font-semibold text-mainBlue">Các nhiệm vụ </h3>
             <div className="flex flex-col gap-3 mt-2 ">
               {!activity?.missions?.length && (
-                <p className="text-center py-20 text-slate-400">
+                <p className="py-20 text-center text-slate-400">
                   {" "}
                   ( Chưa có nhiệm vụ được tạo ){" "}
                 </p>
@@ -232,9 +228,9 @@ export default function AssistantCreateActivity() {
                     className="text-sm py-4 px-6 border border-mainBlue rounded-md border-l-[6px] cursor-pointer hover:translate-x-2 transition-all"
                     onClick={() => setMissionEditing(mission)}
                   >
-                    <div className="flex gap-6 items-center justify-between">
+                    <div className="flex items-center justify-between gap-6">
                       <div>
-                        <span className="font-medium text-base mr-6">
+                        <span className="mr-6 text-base font-medium">
                           {mission.name}
                         </span>
                         <span>+ {mission.point} điểm</span>
@@ -244,7 +240,7 @@ export default function AssistantCreateActivity() {
                         {new Date(mission.endDate).toLocaleDateString("vi")}
                       </span>
                     </div>
-                    <p className="font-light mt-1">{mission.content}</p>
+                    <p className="mt-1 font-light">{mission.content}</p>
                   </div>
                 ))}
             </div>
