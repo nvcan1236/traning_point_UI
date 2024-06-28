@@ -56,7 +56,7 @@ export const API = {
   getAllPeriod: (year) => `${baseURL}/period?year=${year}`,
 
   // PDF
-  generatePdf: `${baseURL}/generatePdf`,
+  generatePdf: `${baseURL}/pdf/create`,
 
   //Upload
   uploadActivity: (activityId) => `${baseURL}/activities/${activityId}/upload`
