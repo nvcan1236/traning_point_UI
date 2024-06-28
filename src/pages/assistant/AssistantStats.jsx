@@ -7,10 +7,20 @@ import SelectBox from "../../components/formControls/SelectBox";
 import BackButton from "../../components/Buttons/BackButton";
 import SecondaryButton from "../../components/Buttons/SecondaryButton";
 import { IoSaveSharp } from "react-icons/io5";
-import { fetchStatsByFaculty, fetchStatsByRank } from "../../hooks/useFetch";
+import {
+  fetchGeneratePdf,
+  fetchStatsByFaculty,
+  fetchStatsByRank,
+} from "../../hooks/useFetch";
+import { tranformPdfResultData } from "../../utils/tranformPdfData";
 
 export default function AssistantStats() {
   const [data, setData] = useState([]);
+  const [content, setContent] = useState({
+    title: "",
+    headers: [],
+    rows: [],
+  });
 
   const [options, setOptions] = useState({
     chart: {
@@ -41,7 +51,13 @@ export default function AssistantStats() {
       ["Kém", dataRes[0].poor],
     ];
     setData(array);
+    setContent({
+      title: "Thống kê theo thành tích",
+      headers: data[0],
+      rows: data.slice(1),
+    });
   };
+
 
   const statsByFaculty = async () => {
     const dataRes = await fetchStatsByFaculty();
@@ -57,12 +73,20 @@ export default function AssistantStats() {
     else statsByFaculty();
   }, [filter]);
 
+
+  const generatePDF = async () => {
+    const pdf = await fetchGeneratePdf(content);
+    const blob = new Blob([pdf], { type: "application/pdf" });
+    const url = window.URL.createObjectURL(blob);
+    window.open(url, "_blank");
+  };
+
   return (
     <div className="p-6">
       <div className="flex gap-10 items-end">
         <BackButton />
         <Heading>Thống kê kết quả học kỳ</Heading>
-        <div >
+        <div>
           <SelectBox
             options={filterOptions}
             name={"filter"}
@@ -71,7 +95,10 @@ export default function AssistantStats() {
             value={filterOptions[0].name}
           />
         </div>
-        <SecondaryButton className="flex items-center gap-2 rounded-sm px-4 ml-auto">
+        <SecondaryButton
+          className="flex items-center gap-2 rounded-sm px-4 ml-auto"
+          onClick={() => generatePDF()}
+        >
           <IoSaveSharp /> Lưu báo cáo
         </SecondaryButton>
       </div>

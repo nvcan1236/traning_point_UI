@@ -499,6 +499,7 @@ const fetchStatsByFaculty = async () => {
 const fetchGeneratePdf = async (bodyData) => {
   const res = await fetch(API.generatePdf, {
     headers: {
+      Authorization: localStorage.getItem("USER_TOKEN"),
       "Content-Type": "application/json",
     },
     body: JSON.stringify(bodyData),
